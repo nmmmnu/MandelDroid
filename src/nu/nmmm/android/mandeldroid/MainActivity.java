@@ -1,7 +1,10 @@
 package nu.nmmm.android.mandeldroid;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -10,6 +13,8 @@ import android.view.WindowManager;
 public class MainActivity extends Activity {
 
 	private MDView _surface;
+	
+	private Thread _thread = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,23 +23,31 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	
-		this._surface = new MDView(this);
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point(); 
+		display.getSize(size);
+				
+		this._surface = new MDView(this, size);
 		
 		setContentView(_surface);
+		
+		_thread = new Thread(_surface);
+		_thread.start();
+		Log.v("main", "Thread supposedly started..." );
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 
-		_surface.pause();
+		//_surface.pause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		_surface.resume();
+		//_surface.resume();
 	}
 
 	@Override

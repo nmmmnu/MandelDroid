@@ -23,8 +23,8 @@ public class FractalManager {
 	void generate(FractalManagerPlot plot, float centerx, float centery, float half_widthx){
 		// prepare calculations
 		
-		int scrx = plot.getWidth();
-		int scry = plot.getHeight();		
+		int scrx = plot.getPlotWidth();
+		int scry = plot.getPlotHeight();		
 		
 		float half_widthy = half_widthx * scry / scrx;
 		
@@ -47,7 +47,10 @@ public class FractalManager {
 				
 				int color = _mandelbrot.Z(xr, yr);
 				
-				plot.plot(x, y, color, maxcolor);
+				boolean ok = plot.plot(x, y, color, maxcolor);
+				
+				if (!ok)
+					return;
 			}
 		}
 	}
