@@ -4,9 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
+import android.util.Log;
 import android.view.View;
-
 import nu.nmmm.android.mandelbrot.*;
 
 public class MDView extends View implements Runnable, FractalManagerPlot{
@@ -30,15 +29,14 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 	private int _height;
 	private int _width;
 	
-	public MDView(Context context, Point size) {
+	private Thread _thread = null;
+	private boolean _threadRunning = false;
+
+	public MDView(Context context, int width, int height) {
 		super(context);
 		
-		this._width = size.x;
-		this._height = size.y;
-				
-		//Log.v("bla", "x = " + Integer.toString(_width) );
-		//Log.v("bla", "y = " + Integer.toString(_height) );
-
+		this._changeSize(width, height);
+		
 		this._image = Bitmap.createBitmap(this._width, this._height, Bitmap.Config.ARGB_8888);
 		this._imageCanvas = new Canvas(this._image);
 	
@@ -51,17 +49,20 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 		FractalCalculator fractalCalc = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 128);
 		this._fractalManager = new FractalManager(fractalCalc);
 	}
-
 	
 	@Override
-	public void run() {
-		MandelbrotMementoFactory memento = MandelbrotMementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
-		_fractalManager.setMemento( memento.getInstance() );
-		_fractalManager.generate(this);
-		
-		this.postInvalidate();
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+
+	//	this._changeSize(getWidth(), getHeight());
 	}
-	
+
+	private void _changeSize(int width, int height){
+		Log.v("mdviev", "Screen size: " + Integer.toString(width) + "x" + Integer.toString(height));
+		
+		this._width = width;
+		this._height = height;
+	}
 	
 	@Override
     protected void onDraw(Canvas canvas) {
@@ -83,7 +84,7 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 			this.postInvalidate();
 		}
 		
-		return true;
+		return _threadRunning;
 	}
 	
 	@Override
@@ -96,4 +97,43 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 		return _height;
 	}
 
+	public void startThread(){
+		if (_threadRunning )
+			return;
+
+		_threadRunning = true;
+
+		_thread = new Thread(this);		
+		_thread.start();	
+		
+		Log.v("mdview", "thread started");
+	}
+
+	public void stopThread(){
+		if (! _threadRunning )
+			return;
+		
+		_threadRunning = false;
+		
+		try {
+			_thread.join(); 
+		} catch (InterruptedException e) {
+			// none
+		}
+		
+		_thread = null;
+
+		Log.v("mdview", "thread stopped");
+	}
+	
+	@Override
+	public void run() {
+		MandelbrotMementoFactory memento = MandelbrotMementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
+		_fractalManager.setMemento( memento.getInstance() );
+		_fractalManager.generate(this);
+		
+		this.postInvalidate();
+
+		_threadRunning = false;
+	}
 }

@@ -1,10 +1,8 @@
 package nu.nmmm.android.mandeldroid;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -14,40 +12,39 @@ public class MainActivity extends Activity {
 
 	private MDView _surface;
 	
-	private Thread _thread = null;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-	
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point(); 
-		display.getSize(size);
+		_setFullScreen();
+		
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		int width = metrics.widthPixels;
+		int height = metrics.heightPixels;
 				
-		this._surface = new MDView(this, size);
+		this._surface = new MDView(this, width, height);
 		
 		setContentView(_surface);
-		
-		_thread = new Thread(_surface);
-		_thread.start();
-		Log.v("main", "Thread supposedly started..." );
+		_surface.startThread();
+	}
+	
+	private void _setFullScreen(){
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);		
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 
-		//_surface.pause();
+		_surface.stopThread();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		//_surface.resume();
+		_surface.startThread();
 	}
 
 	@Override
