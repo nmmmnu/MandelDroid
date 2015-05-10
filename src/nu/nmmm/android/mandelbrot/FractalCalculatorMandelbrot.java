@@ -1,17 +1,23 @@
-package nu.nmmm.android.mandeldroid;
+package nu.nmmm.android.mandelbrot;
 
-public class FractalMandelbrot implements Fractal{
+
+public class FractalCalculatorMandelbrot implements FractalCalculator{
 	public final static int TYPE_CLASSIC		= 0;
 	public final static int TYPE_BURNINGSHIP	= 1;
 	public final static int TYPE_PERPENDICULAR	= 2;
 	
-	private final static float ESCAPE2 = 4;
+	private final static double ESCAPE2 = 4;
 	
 	private int _type;
 	private int _iter;
 	
-	FractalMandelbrot(int type, int iter){
-		this._type = type;
+	public FractalCalculatorMandelbrot(int type, int iter){
+		setType(type);
+		setIterations(iter);
+	}
+	
+	@Override
+	public void setIterations(int iter){
 		this._iter = iter;
 	}
 	
@@ -19,11 +25,22 @@ public class FractalMandelbrot implements Fractal{
 	public int getIterations(){
 		return _iter;
 	}
+
+
+	@Override
+	public void setType(int type) {
+		this._type = type;
+	}
+
+	@Override
+	public int getType() {
+		return _type;
+	}
 	
 	@Override
-	public int Z(float x, float y){
-		float zx = 0;
-		float zy = 0;
+	public int Z(double x, double y){
+		double zx = 0;
+		double zy = 0;
 
 		int i;
 		for(i = 0; i < this._iter; ++i){
@@ -34,22 +51,22 @@ public class FractalMandelbrot implements Fractal{
 
 			case TYPE_BURNINGSHIP:
 				if (zx < 0)
-					zx = -zx;
+					zx = Math.abs(zx);
 				
 				if (zy < 0)
-					zy = -zx;
+					zy = Math.abs(zy);
 				
 				break;
 
 			case TYPE_PERPENDICULAR:
 				if (zy < 0)
-					zy = -zx;
+					zy = -zy;
 
 				break;
 			}
 
-			float zx2 = zx * zx;
-			float zy2 = zy * zy;
+			double zx2 = zx * zx;
+			double zy2 = zy * zy;
 
 			if (zx2 + zy2 > ESCAPE2)
 				return i;
@@ -62,4 +79,5 @@ public class FractalMandelbrot implements Fractal{
 
 		return i;
 	}
+
 }

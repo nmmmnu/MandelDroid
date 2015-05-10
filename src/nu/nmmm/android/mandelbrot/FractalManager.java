@@ -1,11 +1,19 @@
-package nu.nmmm.android.mandeldroid;
+package nu.nmmm.android.mandelbrot;
+
 
 public class FractalManager {
-	private Fractal _mandelbrot;
+	private FractalCalculator _calc;
 	
-	FractalManager(Fractal mandelbrot){
-		this._mandelbrot = mandelbrot;
+	float centerx;
+	float centery;
+	float half_widthx;
+	
+	public FractalManager(FractalCalculator calc){
+		this._calc = calc;
 		
+		this.centerx = 0;
+		this.centery = 0;
+		this.half_widthx = (float) 2.2;
 	}
 	
 	private static float _getResolution(int screen, float width) {
@@ -20,7 +28,7 @@ public class FractalManager {
 		return starty + resy * y;
 	}
 
-	void generate(FractalManagerPlot plot, float centerx, float centery, float half_widthx){
+	public void generate(FractalManagerPlot plot){
 		// prepare calculations
 		
 		int scrx = plot.getPlotWidth();
@@ -36,7 +44,7 @@ public class FractalManager {
 		
 		// iteration calculations
 		
-		int maxcolor = this._mandelbrot.getIterations();
+		int maxcolor = this._calc.getIterations();
 		
 		int x, y;
 
@@ -45,13 +53,28 @@ public class FractalManager {
 			for(x = 0; x < scrx; ++x){
 				float xr = _convertX(startx, resx, x);
 				
-				int color = _mandelbrot.Z(xr, yr);
+				int color = _calc.Z(xr, yr);
 				
-				boolean ok = plot.plot(x, y, color, maxcolor);
+				boolean ok = plot.putPlotPixel(x, y, color, maxcolor);
 				
 				if (!ok)
 					return;
 			}
 		}
+	}
+	
+	public Memento getMemento(){
+		return new Memento(_calc.getType(), _calc.getIterations(), centerx, centery, half_widthx);
+	}
+
+	public boolean setMemento(Memento mem){
+		this._calc.setType(mem.type);
+		this._calc.setIterations(mem.iterations);
+		
+		this.centerx     = mem.x;
+		this.centery     = mem.y;
+		this.half_widthx = mem.hw;
+
+		return true;
 	}
 }

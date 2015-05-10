@@ -1,8 +1,9 @@
-package nu.nmmm.android.mandeldroid;
+package nu.nmmm.android.mandelbrot;
 
-public class FColorStandard implements FColor{
+
+public class ColorStandard implements Color{
 	private int _transIt(int color, int it){
-		return (int) (color / (float) it * 0xFF);
+		return 0xFF - (int) (color / (float) it * 0xFF);
 	}
 	
 	@Override
