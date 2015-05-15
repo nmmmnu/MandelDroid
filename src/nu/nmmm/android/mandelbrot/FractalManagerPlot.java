@@ -1,7 +1,5 @@
 package nu.nmmm.android.mandelbrot;
 
 public interface FractalManagerPlot {
-	int getPlotWidth();
-	int getPlotHeight();
-	boolean putPlotPixel(float x, float y, int color, int maxcolor);
+	boolean putPixel(int x, int y, int color, int maxcolor, int previewSize);
 }

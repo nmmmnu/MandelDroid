@@ -1,7 +1,7 @@
 package nu.nmmm.android.mandelbrot;
 
 
-public class ColorCosmos implements Color{
+public class FColorCosmos implements FColor{
 	protected int _transIt(int color, int it){
 		return 0xFF;
 	}
