@@ -28,14 +28,10 @@ public enum MandelbrotMementoFactory {
 	
 	private Memento _m;
 
-	MandelbrotMementoFactory(int type, int iter, float x, float y, float hw){
+	MandelbrotMementoFactory(int type, int iter, double x, double y, double hw){
 		this._m = new Memento(type, iter, x, y, hw);
 	}
-	
-	MandelbrotMementoFactory(int type, int iter, double x, double y, double hw){
-		this(type, iter, (float) x, (float) y, (float) hw);
-	}
-	
+
 	public Memento getInstance(){
 		return _m;
 	}

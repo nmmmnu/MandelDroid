@@ -8,19 +8,19 @@ public class FractalManager {
 	
 	private FractalCalculator _calc;
 	
-	private float _centerX;
-	private float _centerY;
-	private float _halfWidthX;
+	private double _centerX;
+	private double _centerY;
+	private double _halfWidthX;
 	
 	private int _screenWidth = 0;
 	private int _screenHeight = 0;
-	private float _screenRes = 0;
+	private double _screenRes = 0;
 		
 	public FractalManager(FractalCalculator calc){
 		this._calc = calc;
 		
 		// this generally includes every possible fractal
-		this.setCenter((float) 0.0, (float) 0.0, (float) 2.0);
+		this.setCenter(0.0, 0.0, 2.0);
 	}
 	
 	public FractalManager(FractalCalculator calc, int screenWidth, int screenHeight){
@@ -35,7 +35,7 @@ public class FractalManager {
 		this._screenRes = _getRes();
 	}
 
-	public void setCenter(float centerX, float centerY, float halfWidthX){
+	public void setCenter(double centerX, double centerY, double halfWidthX){
 		this._centerX = centerX;
 		this._centerY = centerY;
 		this._halfWidthX = halfWidthX;
@@ -43,11 +43,11 @@ public class FractalManager {
 		this._screenRes = _getRes();
 	}
 	
-	public void setCenterRelativeToScreen(float deltaX, float deltaY, float scale){
-		float centerX = _centerX + deltaX * _screenRes;
-		float centerY = _centerY + deltaY * _screenRes;
+	public void setCenterRelativeToScreen(double deltaX, double deltaY, double scale){
+		double centerX = _centerX + deltaX * _screenRes;
+		double centerY = _centerY + deltaY * _screenRes;
 		
-		float halfWidthX =  _halfWidthX * scale;
+		double halfWidthX =  _halfWidthX * scale;
 		
 		setCenter(centerX, centerY, halfWidthX);
 	}
@@ -55,10 +55,10 @@ public class FractalManager {
 	private boolean _generate(FractalManagerPlot plot, int step, int stepMAX){		
 		// prepare calculations
 		
-		float half_widthy = _halfWidthX * _screenHeight / _screenWidth;
+		double half_widthy = _halfWidthX * _screenHeight / _screenWidth;
 		
-		float startx = _centerX - _halfWidthX;
-		float starty = _centerY - half_widthy;
+		double startx = _centerX - _halfWidthX;
+		double starty = _centerY - half_widthy;
 		
 		int step2 = step << 1;
 		
@@ -69,12 +69,12 @@ public class FractalManager {
 		int x, y;
 
 		for(y = 0; y < _screenHeight; y += step){
-			float yr = starty + _screenRes * y;
+			double yr = starty + _screenRes * y;
 			for(x = 0; x < _screenWidth; x += step){
 				if (x % step2 == 0 && y % step2 == 0 && step != stepMAX)
 					continue;
 				
-				float xr = startx + _screenRes * x;
+				double xr = startx + _screenRes * x;
 				
 				int color = _calc.Z(xr, yr);
 				
@@ -127,11 +127,11 @@ public class FractalManager {
 
 	
 	
-	private float _getRes() {
+	private double _getRes() {
 		if (_screenWidth < PREVIEW_SQUARE_MAX)
 			return 0;
 		
-		float fractalWidth = _halfWidthX * 2;
+		double fractalWidth = _halfWidthX * 2;
 		
 		return fractalWidth / (_screenWidth - 1);
 	}

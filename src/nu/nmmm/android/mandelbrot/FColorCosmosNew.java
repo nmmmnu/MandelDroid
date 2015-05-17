@@ -1,9 +1,10 @@
 package nu.nmmm.android.mandelbrot;
 
-
 public class FColorCosmosNew extends FColorCosmos{
+	final private static int MAXCOLOR = 0xFF;
+
 	@Override
 	protected int _transIt(int color, int maxcolor){
-		return (int) (0xFF - color / (float) maxcolor * 0xFF);
+		return (int) (MAXCOLOR - color / (double) maxcolor * MAXCOLOR);
 	}
 }
