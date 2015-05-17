@@ -8,16 +8,19 @@ import android.view.View.OnTouchListener;
 
 class GestureDetector implements OnTouchListener{
 	final static String TAG = "GestureDetector";
-	
+		
 	private GestureDetectorConsumer _gdc;
 	
 	private float _px0, _py0;
 
 	private float _plen;
 	private float _plena;
+	
+	private float _scale_max;
 
-	public GestureDetector(GestureDetectorConsumer gdc){
+	public GestureDetector(GestureDetectorConsumer gdc, float scale_max){
 		this._gdc = gdc;
+		this._scale_max = scale_max;
 		
 		_px0 = 0;	
 		_py0 = 0;
@@ -56,6 +59,7 @@ class GestureDetector implements OnTouchListener{
 
 			
 		case MotionEvent.ACTION_UP:
+	    case MotionEvent.ACTION_POINTER_UP:
 			_gdc.moveEnd(_px0, _py0, event.getX() - _px0, event.getY() - _py0, _calcScale());
 			
 			return true;
@@ -89,7 +93,16 @@ class GestureDetector implements OnTouchListener{
 		
 		float scale = _plena / _plen;
 		
-		return scale == 0 ? 1 : scale;
+		if (scale == 0)
+			return 1;
+		
+		if (scale > _scale_max)
+			return _scale_max;
+		
+		if (scale < -_scale_max)
+			return - _scale_max;
+
+		return scale;
 	}
 	
 
@@ -99,56 +112,4 @@ class GestureDetector implements OnTouchListener{
 		Log.v(TAG, msg);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-public boolean onTouchEvent22222222(MotionEvent event) {
-	float x = event.getX();
-	float y = event.getY();
-
-	float rx = _gestureX - x;
-	float ry = _gestureY - y;
-	
-	switch (event.getAction()) {
-	case MotionEvent.ACTION_DOWN:
-		_gestureX = x;
-		_gestureY = y;
-		
-		Log.v(TAG, "Touch ACTION_DOWN: " + x + " / " + y);
-		
-		return true;
-
-	case MotionEvent.ACTION_MOVE:
-		_gestureDrawX = rx;
-		_gestureDrawY = ry;
-		
-		postInvalidate();
-		
-		return true;
-
-	case MotionEvent.ACTION_UP:
-		Log.v(TAG, "Touch ACTION_UP:   " + x  + " / " + y);
-		Log.v(TAG, "Touch ACTION_UP: R:" + rx + " / " + ry);
-
-		_fractalManager.setCenterRelativeToScreen(rx, ry, 0);
-					
-		if (rx != 0 || ry != 0)
-			restartThread();
-		
-		return true;
-	}
-
-	return false;
-}
-*/
 

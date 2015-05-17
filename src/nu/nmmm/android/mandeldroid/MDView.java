@@ -17,6 +17,8 @@ class MDView extends View implements Runnable, FractalManagerPlot, GestureDetect
 	final private static int PIXEL_DEBUG_PREVIEW_COLOR = Color.RED;
 	
 	final private static int COUNTER_REFRESH = 1024;
+	
+	final private static float SCALE_MAX = 5;
 		
 	private static int _counterRefresh = 0;
 
@@ -42,7 +44,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, GestureDetect
 	public MDView(Context context, int width, int height) {
 		super(context);
 		
-		this._gd = new GestureDetector(this);
+		this._gd = new GestureDetector(this, SCALE_MAX);
 		this.setOnTouchListener(this._gd);
 		
 		this._width = width;
