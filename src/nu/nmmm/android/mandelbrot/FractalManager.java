@@ -47,10 +47,7 @@ public class FractalManager {
 		float centerX = _centerX + deltaX * _screenRes;
 		float centerY = _centerY + deltaY * _screenRes;
 		
-		float halfWidthX = _halfWidthX;
-		
-		halfWidthX = _halfWidthX * scale;
-		
+		float halfWidthX =  _halfWidthX * scale;
 		
 		setCenter(centerX, centerY, halfWidthX);
 	}

@@ -7,13 +7,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import nu.nmmm.android.mandelbrot.*;
 
-class MDView extends View implements Runnable, FractalManagerPlot, GestureDetectorConsumer{
+class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureDetector.OnScaleGestureListener {
 	final private static String TAG = "MDView";
 	
-	final private static boolean PIXEL_DEBUG_PREVIEW = ! true;
+	final private static boolean PIXEL_DEBUG_PREVIEW =  true;
 	final private static int PIXEL_DEBUG_PREVIEW_COLOR = Color.RED;
 	
 	final private static int COUNTER_REFRESH = 1024;
@@ -38,14 +40,14 @@ class MDView extends View implements Runnable, FractalManagerPlot, GestureDetect
 	private Thread _thread = null;
 	private boolean _threadRunning = false;
 	
-	private GestureDetector _gd;
+	private ScaleGestureDetector _sgd;
 
 	@SuppressLint("ClickableViewAccessibility")
 	public MDView(Context context, int width, int height) {
 		super(context);
 		
-		this._gd = new GestureDetector(this, SCALE_MAX);
-		this.setOnTouchListener(this._gd);
+		this._sgd = new ScaleGestureDetector(context, this);
+		//this.setOnTouchListener(this);
 		
 		this._width = width;
 		this._height = height;
@@ -66,9 +68,9 @@ class MDView extends View implements Runnable, FractalManagerPlot, GestureDetect
 		this._fractalColor = new FColorStandard();
 		//this._fractalColor = new FColorCosmosNew();
 
-		MandelbrotMementoFactory memento = MandelbrotMementoFactory.BIG_PICTURE;
+		MandelbrotMementoFactory memento = MandelbrotMementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
 		
-		FractalCalculator fractalCalc = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 64);
+		FractalCalculator fractalCalc = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 256);
 		this._fractalManager = new FractalManager(fractalCalc, _width, _height);
 		this._fractalManager.setMemento( memento.getInstance() );
 	}
@@ -154,47 +156,124 @@ class MDView extends View implements Runnable, FractalManagerPlot, GestureDetect
 	}
 
 	
-	// GestureDetector
+	final private static int GD_INVALID_POINTER_ID = -1;
 	
-	private float _gdX, _gdY;
+	private float _gdClickX, _gdClickY;
+	private float _gdDeltaX, _gdDeltaY;
+	private int _gdDragPointerID = GD_INVALID_POINTER_ID;
+	
 	private float _gdScale = 1;
 	
 	@SuppressLint("DrawAllocation")
 	@Override
 	protected void onDraw(Canvas canvas) {
+		canvas.save();
 		canvas.scale(_gdScale, _gdScale, canvas.getWidth() / 2, canvas.getHeight() / 2);
-		canvas.drawBitmap(_image, _gdX, _gdY, _paint2);
+		canvas.drawBitmap(_image, _gdDeltaX, _gdDeltaY, _paint2);
+		canvas.restore();
 	}
+
 	
-	@Override
-	public void moveStart(float x, float y){
-		_gdX = 0;
-		_gdY = 0;
-	}
 	
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
-	public void moveTo(float xxx, float yyy, float dx, float dy, float scale) {
-		_gdX = dx;
-		_gdY = dy;
+	public boolean onTouchEvent(MotionEvent event) {
+		_sgd.onTouchEvent(event);
 		
-		_gdScale = scale;
-				
-		if (scale != 1){
-			Log.i(TAG, " dx=" + _gdX + " dy=" + _gdY + " scale=" + scale); 
+		int pointer;
+		
+		switch (event.getAction() & MotionEvent.ACTION_MASK) {
+		case MotionEvent.ACTION_DOWN:
+			_gdDragPointerID = event.getPointerId(0);
+	    	_gdClickX = event.getX();
+	    	_gdClickY = event.getY();
+	    	
+	    	_gdDeltaX = 0;
+	    	_gdDeltaY = 0;
+	    	
+	    	return true;
+
+		case MotionEvent.ACTION_MOVE:
+			pointer = event.findPointerIndex(_gdDragPointerID);
+			if (pointer != GD_INVALID_POINTER_ID){
+				_gdDeltaX = event.getX(pointer) - _gdClickX;
+				_gdDeltaY = event.getY(pointer) - _gdClickY;
+	
+		    	_touchMove();
+			}
+			
+			return false;
+
+		case MotionEvent.ACTION_UP:
+			pointer = event.findPointerIndex(_gdDragPointerID);
+			if (pointer != GD_INVALID_POINTER_ID){
+				_gdDeltaX = event.getX(pointer) - _gdClickX;
+				_gdDeltaY = event.getY(pointer) - _gdClickY;
+	
+				_touchMoveEnd();
+			}
+			
+			_gdDeltaX = 0;
+			_gdDeltaY = 0;
+			_gdClickX = 0;
+			_gdClickY = 0;
+			
+			_gdScale = 1;
+			
+			_gdDragPointerID = GD_INVALID_POINTER_ID;
+
+			return true;
 		}
+		
+	    return false;
+	}
+	
+	private void _touchMove(){
+		_gdScale = _getScale();
+		
+		Log.i(TAG, " dx=" + (_gdClickX + _gdDeltaX) + " dy=" + (_gdClickY + _gdDeltaY) + " scale=" + _gdScale); 
 		
 		postInvalidate();
 	}
+	
+	private void _touchMoveEnd(){		
+		float scale = _getScale();
+		
+		_fractalManager.setCenterRelativeToScreen(-_gdDeltaX, -_gdDeltaY, 1 / scale);	
+		
+		restartThread();
+	}
+
+	private float _getScale(){
+		float scale = _sgd.getScaleFactor();
+		
+		if (scale > SCALE_MAX)
+			scale = SCALE_MAX;
+
+		if (scale < -SCALE_MAX)
+			scale = -SCALE_MAX;
+		
+		if (scale == 0)
+			scale = 1;
+
+		return scale;
+	}
+	
+	// ScaleGestureDetector
+	
+	@Override
+	public boolean onScaleBegin(ScaleGestureDetector detector) {
+		return true;
+	}
+	
+	@Override
+	public boolean onScale(ScaleGestureDetector detector) {
+		_touchMove();
+		return false;
+	}
 
 	@Override
-	public void moveEnd(float xxx, float yyy, float dx, float dy, float scale) {
-		_gdX = 0;
-		_gdY = 0;
-		_gdScale = 1;
-			
-		if (dx != 0 || dy != 0 || scale != 1){
-			_fractalManager.setCenterRelativeToScreen(-dx, -dy, 1 / scale);			
-			restartThread();
-		}
+	public void onScaleEnd(ScaleGestureDetector detector) {
+		_touchMoveEnd();
 	}
 }
