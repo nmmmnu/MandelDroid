@@ -2,7 +2,9 @@ package nu.nmmm.android.mandelbrot;
 
 
 public class FractalManager {
-	final static int PREVIEW_SQUARE_MAX = 64;
+	// must be power of 2
+	// 64 is better for most cases
+	final static int PREVIEW_SQUARE_MAX = 1 << 6;
 	
 	private FractalCalculator _calc;
 	
@@ -41,11 +43,19 @@ public class FractalManager {
 		this._screenRes = _getRes();
 	}
 	
-	public void setCenterRelativeToScreen(float deltaX, float deltaY, float halfWidthX){
-		setCenter(_centerX + deltaX * _screenRes, _centerY + deltaY * _screenRes, _halfWidthX);
+	public void setCenterRelativeToScreen(float deltaX, float deltaY, float scale){
+		float centerX = _centerX + deltaX * _screenRes;
+		float centerY = _centerY + deltaY * _screenRes;
+		
+		float halfWidthX = _halfWidthX;
+		
+		halfWidthX = _halfWidthX * scale;
+		
+		
+		setCenter(centerX, centerY, halfWidthX);
 	}
 
-	private boolean _generate(FractalManagerPlot plot, int step){		
+	private boolean _generate(FractalManagerPlot plot, int step, int stepMAX){		
 		// prepare calculations
 		
 		float half_widthy = _halfWidthX * _screenHeight / _screenWidth;
@@ -64,7 +74,7 @@ public class FractalManager {
 		for(y = 0; y < _screenHeight; y += step){
 			float yr = starty + _screenRes * y;
 			for(x = 0; x < _screenWidth; x += step){
-				if (x % step2 == 0 && y % step2 == 0 && step != PREVIEW_SQUARE_MAX)
+				if (x % step2 == 0 && y % step2 == 0 && step != stepMAX)
 					continue;
 				
 				float xr = startx + _screenRes * x;
@@ -88,7 +98,7 @@ public class FractalManager {
 		int step = PREVIEW_SQUARE_MAX;
 		
 		while(step > 1){
-			boolean ok = _generate(plot, step);
+			boolean ok = _generate(plot, step, PREVIEW_SQUARE_MAX);
 			
 			if (!ok)
 				return false;
@@ -97,11 +107,11 @@ public class FractalManager {
 		}
 		
 		// render final fractal
-		return generate(plot);
+		return _generate(plot, 1, PREVIEW_SQUARE_MAX);
 	}
 	
 	public boolean generate(FractalManagerPlot plot){
-		return _generate(plot, 1);
+		return _generate(plot, 1, 1);
 	}
 	
 	

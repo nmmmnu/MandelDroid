@@ -7,19 +7,20 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import nu.nmmm.android.mandelbrot.*;
 
-public class MDView extends View implements Runnable, FractalManagerPlot{
-	final private static boolean PIXEL_PREVIEW = ! true;
-	final private static int PIXEL_PREVIEW_COLOR = Color.RED;
+class MDView extends View implements Runnable, FractalManagerPlot, GestureDetectorConsumer{
+	final private static String TAG = "MDView";
+	
+	final private static boolean PIXEL_DEBUG_PREVIEW = ! true;
+	final private static int PIXEL_DEBUG_PREVIEW_COLOR = Color.RED;
 	
 	final private static int COUNTER_REFRESH = 1024;
-	
+		
 	private static int _counterRefresh = 0;
 
-	private FractalManager _fractalManager;
+	FractalManager _fractalManager;
 	private FColor _fractalColor;
 
 	private Bitmap _image;
@@ -27,22 +28,22 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 	private Paint _paint;
 	
 	// dummy used onDraw()
-	private Paint _paint2 = new Paint();
-	
-	// gesture
-	private float _gestureX = 0;
-	private float _gestureY = 0;
-	private float _gestureDrawX = 0;
-	private float _gestureDrawY = 0;
+	private Paint _paint2;
 	
 	private int _height;
 	private int _width;
 	
 	private Thread _thread = null;
 	private boolean _threadRunning = false;
+	
+	private GestureDetector _gd;
 
+	@SuppressLint("ClickableViewAccessibility")
 	public MDView(Context context, int width, int height) {
 		super(context);
+		
+		this._gd = new GestureDetector(this);
+		this.setOnTouchListener(this._gd);
 		
 		this._width = width;
 		this._height = height;
@@ -51,74 +52,29 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 		this._imageCanvas = new Canvas(this._image);
 	
 	    this._paint = new Paint();
-	    this._paint.setAntiAlias(false);
+	   	this._paint.setAntiAlias(false);
+	    
+	    this._paint2 = new Paint();
+	    
+	    if (PIXEL_DEBUG_PREVIEW){
+		    this._paint2.setAntiAlias(false);
+	    	this._paint2.setColor(PIXEL_DEBUG_PREVIEW_COLOR);
+	    }
 	    
 		this._fractalColor = new FColorStandard();
 		//this._fractalColor = new FColorCosmosNew();
 
-		MandelbrotMementoFactory memento = MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_ALIEN;
+		MandelbrotMementoFactory memento = MandelbrotMementoFactory.BIG_PICTURE;
 		
 		FractalCalculator fractalCalc = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 64);
 		this._fractalManager = new FractalManager(fractalCalc, _width, _height);
 		this._fractalManager.setMemento( memento.getInstance() );
 	}
 	
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-
-	//	this._changeSize(getWidth(), getHeight());
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		canvas.drawBitmap(_image, - _gestureDrawX, - _gestureDrawY, _paint2);
-	}
 	
-	@SuppressLint("ClickableViewAccessibility")
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		float x = event.getX();
-		float y = event.getY();
-		
-		float rx = _gestureX - x;
-		float ry = _gestureY - y;
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			_gestureX = x;
-			_gestureY = y;
-			
-			Log.v("touch", "ACTION_DOWN: " + Float.toString(x) + " / " + Float.toString(y));
-			
-			return true;
-
-		case MotionEvent.ACTION_MOVE:
-			_gestureDrawX = rx;
-			_gestureDrawY = ry;
-			
-			postInvalidate();
-			
-			return true;
-
-		case MotionEvent.ACTION_UP:
-			Log.v("touch", "ACTION_UP: " + Float.toString(x) + " / " + Float.toString(y));
-			Log.v("touch", "ACTION_UP: " + Float.toString(rx) + " / " + Float.toString(ry));
-
-			_fractalManager.setCenterRelativeToScreen(rx, ry, 0);
-			
-			Bitmap image = _image.copy(_image.getConfig(), true);
-			_imageCanvas.drawColor(Color.WHITE);
-			_imageCanvas.drawBitmap(image, - _gestureDrawX, - _gestureDrawY, _paint2);
-			
-			restartThread();
-			
-			return true;
-		}
-
-		return false;
-	}
-
+	// FractalManagerPlot
+	
+	
 	@Override
 	public boolean putPixel(int x, int y, int color, int maxcolor, int squareSize) {
 		int a = _fractalColor.convertColor(color, maxcolor);
@@ -128,10 +84,13 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 		if (squareSize <= 1){
 			_imageCanvas.drawPoint(x, y, _paint);
 		}else{
-			if (PIXEL_PREVIEW)
-				_imageCanvas.drawPoint(x, y, _paint);
-			else
+			if (! PIXEL_DEBUG_PREVIEW){
+				// this is default situation
 				_imageCanvas.drawRect(x, y, x + squareSize, y + squareSize, _paint);
+			}else{
+				_imageCanvas.drawRect(x, y, x + squareSize, y + squareSize, _paint2);
+				_imageCanvas.drawPoint(x, y, _paint);
+			}
 		}
 		
 		_counterRefresh += squareSize * squareSize;
@@ -145,22 +104,20 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 		return _threadRunning;
 	}
 	
+	
+	// Runnable
+	
+	
 	public void startThread(){
 		if (_threadRunning )
 			return;
 
 		_threadRunning = true;
 
-		_gestureDrawX = 0;
-		_gestureDrawY = 0;
-
-		if (PIXEL_PREVIEW)
-			this._imageCanvas.drawColor(PIXEL_PREVIEW_COLOR);
-
 		_thread = new Thread(this);
 		_thread.start();	
 		
-		Log.v("mdview", "thread started");
+		Log.v(TAG, "thread started"); 
 	}
 
 	public void stopThread(){
@@ -177,7 +134,7 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 		
 		_thread = null;
 
-		Log.v("mdview", "thread stopped");
+		Log.v(TAG, "thread stopped");
 	}
 	
 	public void restartThread(){
@@ -192,5 +149,50 @@ public class MDView extends View implements Runnable, FractalManagerPlot{
 		this.postInvalidate();
 
 		_threadRunning = false;
+	}
+
+	
+	// GestureDetector
+	
+	private float _gdX, _gdY;
+	private float _gdScale = 1;
+	
+	@SuppressLint("DrawAllocation")
+	@Override
+	protected void onDraw(Canvas canvas) {
+		canvas.scale(_gdScale, _gdScale, canvas.getWidth() / 2, canvas.getHeight() / 2);
+		canvas.drawBitmap(_image, _gdX, _gdY, _paint2);
+	}
+	
+	@Override
+	public void moveStart(float x, float y){
+		_gdX = 0;
+		_gdY = 0;
+	}
+	
+	@Override
+	public void moveTo(float xxx, float yyy, float dx, float dy, float scale) {
+		_gdX = dx;
+		_gdY = dy;
+		
+		_gdScale = scale;
+				
+		if (scale != 1){
+			Log.i(TAG, " dx=" + _gdX + " dy=" + _gdY + " scale=" + scale); 
+		}
+		
+		postInvalidate();
+	}
+
+	@Override
+	public void moveEnd(float xxx, float yyy, float dx, float dy, float scale) {
+		_gdX = 0;
+		_gdY = 0;
+		_gdScale = 1;
+			
+		if (dx != 0 || dy != 0 || scale != 1){
+			_fractalManager.setCenterRelativeToScreen(-dx, -dy, 1 / scale);			
+			restartThread();
+		}
 	}
 }
