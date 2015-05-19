@@ -19,8 +19,7 @@ public class FractalManager {
 	public FractalManager(FractalCalculator calc){
 		this._calc = calc;
 		
-		// this generally includes every possible fractal
-		this.setCenter(0.0, 0.0, 2.0);
+		this.setCenter(0, 0, 2.2);
 	}
 	
 	public FractalManager(FractalCalculator calc, int screenWidth, int screenHeight){
@@ -43,6 +42,11 @@ public class FractalManager {
 		this._screenRes = _getRes();
 	}
 	
+	public double[] getCenter(){
+		double x[] = { _centerX, _centerY, _screenRes};
+		return x;
+	}
+	
 	public void setCenterRelativeToScreen(double deltaX, double deltaY, double scale){
 		double centerX = _centerX + deltaX * _screenRes;
 		double centerY = _centerY + deltaY * _screenRes;
@@ -50,6 +54,14 @@ public class FractalManager {
 		double halfWidthX =  _halfWidthX * scale;
 		
 		setCenter(centerX, centerY, halfWidthX);
+	}
+
+	public void setIterations(int iterations){
+		this._calc.setIterations(iterations);
+	}
+
+	public void setType(int type){
+		this._calc.setType(type);
 	}
 
 	private boolean _generate(FractalManagerPlot plot, int step, int stepMAX){		
@@ -80,7 +92,7 @@ public class FractalManager {
 				
 				boolean ok = plot.putPixel(x, y, color, maxcolor, step);
 				
-				if (!ok)
+				if (ok == false)
 					return false;
 			}
 		}

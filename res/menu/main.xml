@@ -2,10 +2,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="nu.nmmm.android.mandeldroid.MainActivity" >
 
+    <item android:id="@+id/m_fractal_type"
+          android:title="@string/m_fractal_type" >
+        <menu>
+            <item android:id="@+id/m_fractal_type_mandelbrot"
+                  android:title="@string/m_fractal_type_mandelbrot" />
+            <item android:id="@+id/m_fractal_type_bs"
+                  android:title="@string/m_fractal_type_bs" />
+            <item android:id="@+id/m_fractal_type_pbs"
+                  android:title="@string/m_fractal_type_pbs" />
+            </menu>
+    </item>
+    
+    <item android:id="@+id/m_fractal_colors"
+          android:title="@string/m_fractal_colors" >
+        <menu>
+            <item android:id="@+id/m_fractal_colors_standard"
+                  android:title="@string/m_fractal_colors_standard" />
+            <item android:id="@+id/m_fractal_colors_cosmos"
+                  android:title="@string/m_fractal_colors_cosmos" />
+            <item android:id="@+id/m_fractal_colors_none"
+                  android:title="@string/m_fractal_colors_none" />
+            </menu>
+    </item>
+    
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
+        android:id="@+id/m_reset"
+        android:title="@string/m_reset" />
+    <item
+        android:id="@+id/m_places"
+        android:title="@string/m_places" />
+    <item
+        android:id="@+id/m_settings"
+        android:title="@string/m_settings" />
+    <item
+        android:id="@+id/m_save_image"
+        android:title="@string/m_save_image" />
+    <item
+        android:id="@+id/m_copy_coordinates"
+        android:title="@string/m_copy_coordinates" />
+    
 </menu>

@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Mandel Droid</string>
-    <string name="action_settings">Settings</string>
+    
+    
+    
+    <string name="m_fractal_type">Fractal Type</string>
+    <string name="m_fractal_type_mandelbrot">Mandelbrot</string>
+    <string name="m_fractal_type_bs">Burning Ship</string>
+	<string name="m_fractal_type_pbs">Perpendicular Burning Ship</string>
 
+    <string name="m_fractal_colors">Fractal Colors</string>
+    <string name="m_fractal_colors_standard">Standard</string>
+    <string name="m_fractal_colors_cosmos">Cosmos</string>
+	<string name="m_fractal_colors_none">None (Educational)</string>
+
+		<string name="m_reset">Reset</string>
+    <string name="m_places">Touristic Places :)</string>
+    <string name="m_settings">Settings</string>
+    <string name="m_save_image">Save Image</string>
+    <string name="m_copy_coordinates">Copy Coordinates to Clipboard</string>
+    
+    
+    
+	<string name="s_max_iterations">Max Iterations</string>
+    <string name="s_max_iterations_descr">Change Max Iterations</string>
+
+	<string name="s_fractal_type">Fractal Type</string>
+    <string name="s_fractal_type_descr">Change Fractal Type</string>
+    
+	<string name="s_fractal_color">Fractal Colors</string>
+    <string name="s_fractal_color_descr">Change Fractal Colors</string>
+    
+	<string name="s_pixel_preview">Debug Rendering</string>
+    <string name="s_pixel_preview_descr">Pixel Preview for Nerds </string>
+   
+    
+    
+    <string name="t_save_image_ok">Image saved to </string>
+    <string name="t_save_image_err">Image save failed.</string>
+    <string name="t_copy_to_clipboard_ok">Coordinates are in the clipboard.</string>
+    
 </resources>

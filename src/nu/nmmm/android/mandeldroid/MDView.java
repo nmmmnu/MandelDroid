@@ -6,24 +6,27 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
+
+import java.io.*;
+
 import nu.nmmm.android.mandelbrot.*;
 
-class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureDetector.OnScaleGestureListener {
+class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDetectorConsumer {
+	@SuppressWarnings("unused")
 	final private static String TAG = "MDView";
 	
-	final private static boolean PIXEL_DEBUG_PREVIEW =  true;
-	final private static int PIXEL_DEBUG_PREVIEW_COLOR = Color.RED;
+	private int PIXEL_DEBUG_PREVIEW_COLOR = Color.RED;
 	
 	final private static int COUNTER_REFRESH = 1024;
 	
+	final private static float SCALE_MIN = 0;
 	final private static float SCALE_MAX = 5;
 		
 	private static int _counterRefresh = 0;
 
+	private MyGestureDetector _mgd;
+	
 	FractalManager _fractalManager;
 	private FColor _fractalColor;
 
@@ -37,17 +40,14 @@ class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureD
 	private int _height;
 	private int _width;
 	
-	private Thread _thread = null;
-	private boolean _threadRunning = false;
-	
-	private ScaleGestureDetector _sgd;
-
+	private boolean _pixelDebugPreview =  false;
+		
 	@SuppressLint("ClickableViewAccessibility")
-	public MDView(Context context, int width, int height) {
+	public MDView(Context context, int width, int height, FColor fractalColor) {
 		super(context);
 		
-		this._sgd = new ScaleGestureDetector(context, this);
-		//this.setOnTouchListener(this);
+		_mgd = new MyGestureDetector(context, this, SCALE_MIN, SCALE_MAX);
+		this.setOnTouchListener(_mgd);
 		
 		this._width = width;
 		this._height = height;
@@ -60,25 +60,46 @@ class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureD
 	    
 	    this._paint2 = new Paint();
 	    
-	    if (PIXEL_DEBUG_PREVIEW){
+	    if (_pixelDebugPreview){
 		    this._paint2.setAntiAlias(false);
 	    	this._paint2.setColor(PIXEL_DEBUG_PREVIEW_COLOR);
 	    }
 	    
-		this._fractalColor = new FColorStandard();
-		//this._fractalColor = new FColorCosmosNew();
+	    this._fractalColor = fractalColor;
 
-		MandelbrotMementoFactory memento = MandelbrotMementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
-		
 		FractalCalculator fractalCalc = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 256);
 		this._fractalManager = new FractalManager(fractalCalc, _width, _height);
-		this._fractalManager.setMemento( memento.getInstance() );
 	}
 	
+	public MDView(Context context, int width, int height) {
+	    this(context, width, height, new FColorStandard() );
+	}
+	
+	public void setPixelDebugPreview(boolean pixelDebugPreview){
+		this._pixelDebugPreview = pixelDebugPreview;
+	}
+	
+	public void setFractalMemento(MandelbrotMementoFactory memento){
+		this._fractalManager.setMemento( memento.getInstance() );	
+	}
+	
+	public void setFractalIterations(int iterations){
+		this._fractalManager.setIterations(iterations); 
+	}
+
+	public void setFractalType(int type){
+		this._fractalManager.setType(type); 
+	}
+	
+	public void setFractalColor(FColor fractalColor){
+		this._fractalColor = fractalColor;
+	}
 	
 	// FractalManagerPlot
 	
-	
+	private Thread _thread = null;
+	private boolean _threadRunning = false;
+
 	@Override
 	public boolean putPixel(int x, int y, int color, int maxcolor, int squareSize) {
 		int a = _fractalColor.convertColor(color, maxcolor);
@@ -88,7 +109,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureD
 		if (squareSize <= 1){
 			_imageCanvas.drawPoint(x, y, _paint);
 		}else{
-			if (! PIXEL_DEBUG_PREVIEW){
+			if (! _pixelDebugPreview){
 				// this is default situation
 				_imageCanvas.drawRect(x, y, x + squareSize, y + squareSize, _paint);
 			}else{
@@ -120,8 +141,6 @@ class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureD
 
 		_thread = new Thread(this);
 		_thread.start();	
-		
-		Log.v(TAG, "thread started"); 
 	}
 
 	public void stopThread(){
@@ -137,13 +156,6 @@ class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureD
 		}
 		
 		_thread = null;
-
-		Log.v(TAG, "thread stopped");
-	}
-	
-	public void restartThread(){
-		stopThread();
-		startThread();
 	}
 	
 	@Override
@@ -155,125 +167,65 @@ class MDView extends View implements Runnable, FractalManagerPlot, ScaleGestureD
 		_threadRunning = false;
 	}
 
+	// MyGestureDetectorConsumer
 	
-	final private static int GD_INVALID_POINTER_ID = -1;
+	float _gScale = 1;
+	float _gDeltaX = 0;
+	float _gDeltaY = 0;
 	
-	private float _gdClickX, _gdClickY;
-	private float _gdDeltaX, _gdDeltaY;
-	private int _gdDragPointerID = GD_INVALID_POINTER_ID;
-	
-	private float _gdScale = 1;
-	
-	@SuppressLint("DrawAllocation")
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.save();
-		canvas.scale(_gdScale, _gdScale, canvas.getWidth() / 2, canvas.getHeight() / 2);
-		canvas.drawBitmap(_image, _gdDeltaX, _gdDeltaY, _paint2);
+		canvas.scale(_gScale, _gScale, canvas.getWidth() / 2, canvas.getHeight() / 2);
+		canvas.drawBitmap(_image, _gDeltaX, _gDeltaY, _paint2);
 		canvas.restore();
 	}
-
 	
-	
-	@SuppressLint("ClickableViewAccessibility")
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		_sgd.onTouchEvent(event);
-		
-		int pointer;
-		
-		switch (event.getAction() & MotionEvent.ACTION_MASK) {
-		case MotionEvent.ACTION_DOWN:
-			_gdDragPointerID = event.getPointerId(0);
-	    	_gdClickX = event.getX();
-	    	_gdClickY = event.getY();
-	    	
-	    	_gdDeltaX = 0;
-	    	_gdDeltaY = 0;
-	    	
-	    	return true;
-
-		case MotionEvent.ACTION_MOVE:
-			pointer = event.findPointerIndex(_gdDragPointerID);
-			if (pointer != GD_INVALID_POINTER_ID){
-				_gdDeltaX = event.getX(pointer) - _gdClickX;
-				_gdDeltaY = event.getY(pointer) - _gdClickY;
-	
-		    	_touchMove();
-			}
-			
-			return false;
-
-		case MotionEvent.ACTION_UP:
-			pointer = event.findPointerIndex(_gdDragPointerID);
-			if (pointer != GD_INVALID_POINTER_ID){
-				_gdDeltaX = event.getX(pointer) - _gdClickX;
-				_gdDeltaY = event.getY(pointer) - _gdClickY;
-	
-				_touchMoveEnd();
-			}
-			
-			_gdDeltaX = 0;
-			_gdDeltaY = 0;
-			_gdClickX = 0;
-			_gdClickY = 0;
-			
-			_gdScale = 1;
-			
-			_gdDragPointerID = GD_INVALID_POINTER_ID;
-
-			return true;
-		}
-		
-	    return false;
-	}
-	
-	private void _touchMove(){
-		_gdScale = _getScale();
-		
-		Log.i(TAG, " dx=" + (_gdClickX + _gdDeltaX) + " dy=" + (_gdClickY + _gdDeltaY) + " scale=" + _gdScale); 
+	public void touchMove(float x, float y, float dx, float dy, float scale){
+		_gDeltaX = dx;
+		_gDeltaY = dy;
+		_gScale = scale;
 		
 		postInvalidate();
 	}
 	
-	private void _touchMoveEnd(){		
-		float scale = _getScale();
-		
-		_fractalManager.setCenterRelativeToScreen(-_gdDeltaX, -_gdDeltaY, 1 / scale);	
-		
-		restartThread();
+	@Override
+	public void touchMoveBegin(float x, float y){
 	}
-
-	private float _getScale(){
-		float scale = _sgd.getScaleFactor();
-		
-		if (scale > SCALE_MAX)
-			scale = SCALE_MAX;
-
-		if (scale < -SCALE_MAX)
-			scale = -SCALE_MAX;
-		
-		if (scale == 0)
-			scale = 1;
-
-		return scale;
-	}
-	
-	// ScaleGestureDetector
 	
 	@Override
-	public boolean onScaleBegin(ScaleGestureDetector detector) {
+	public void touchMoveEnd(float x, float y, float dx, float dy, float scale){				
+		_gScale = 1;
+		_gDeltaX = 0;
+		_gDeltaY = 0;
+		
+		_fractalManager.setCenterRelativeToScreen(-dx, -dy, 1 / scale);	
+		
+		stopThread();
+		startThread();
+	}
+
+	// Menu
+	
+	public void resetCoordinates() {
+		_fractalManager.setCenter(0, 0, 2.2);
+		
+		stopThread();
+		startThread();
+	}
+
+	public double[] getCoordinate() {
+		return _fractalManager.getCenter();
+	}
+
+	public boolean saveToFile(File f) throws IOException {
+		FileOutputStream out = new FileOutputStream(f);
+		_image.compress(Bitmap.CompressFormat.PNG, 100, out); 
+			// The compression factor (100) is ignored for PNG
+	
+		out.close();
+		
 		return true;
-	}
-	
-	@Override
-	public boolean onScale(ScaleGestureDetector detector) {
-		_touchMove();
-		return false;
-	}
-
-	@Override
-	public void onScaleEnd(ScaleGestureDetector detector) {
-		_touchMoveEnd();
 	}
 }
