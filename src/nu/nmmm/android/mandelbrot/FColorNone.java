@@ -1,9 +1,13 @@
 package nu.nmmm.android.mandelbrot;
 
 
-public class FColorNone implements FColor{
+class FColorNone implements FColor{
 	@Override
-	public int convertColor(int color, int maxcolor) {
-		return color < maxcolor ? 0xFF : 0;
+	public int[] convertColor(int color, int maxcolor) {
+		int a = color < maxcolor ? 0xFF : 0;
+
+		int x[] = {a, a, a};
+
+		return x;
 	}
 }

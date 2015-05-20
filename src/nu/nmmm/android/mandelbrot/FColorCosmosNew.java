@@ -1,6 +1,6 @@
 package nu.nmmm.android.mandelbrot;
 
-public class FColorCosmosNew extends FColorCosmos{
+class FColorCosmosNew extends FColorCosmos{
 	final private static int MAXCOLOR = 0xFF;
 
 	@Override

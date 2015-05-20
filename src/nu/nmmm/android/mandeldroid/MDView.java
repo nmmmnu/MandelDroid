@@ -59,11 +59,8 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	   	this._paint.setAntiAlias(false);
 	    
 	    this._paint2 = new Paint();
-	    
-	    if (_pixelDebugPreview){
-		    this._paint2.setAntiAlias(false);
-	    	this._paint2.setColor(PIXEL_DEBUG_PREVIEW_COLOR);
-	    }
+	    this._paint2.setAntiAlias(false);
+    	this._paint2.setColor(PIXEL_DEBUG_PREVIEW_COLOR);
 	    
 	    this._fractalColor = fractalColor;
 
@@ -79,8 +76,8 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 		this._pixelDebugPreview = pixelDebugPreview;
 	}
 	
-	public void setFractalMemento(MandelbrotMementoFactory memento){
-		this._fractalManager.setMemento( memento.getInstance() );	
+	public void setFractalMemento(Memento memento){
+		this._fractalManager.setMemento( memento );	
 	}
 	
 	public void setFractalIterations(int iterations){
@@ -102,9 +99,9 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 
 	@Override
 	public boolean putPixel(int x, int y, int color, int maxcolor, int squareSize) {
-		int a = _fractalColor.convertColor(color, maxcolor);
+		int a[] = _fractalColor.convertColor(color, maxcolor);
 		
-		_paint.setARGB(0xFF, a, a, a);
+		_paint.setARGB(0xFF, a[0], a[1], a[2]);
 		
 		if (squareSize <= 1){
 			_imageCanvas.drawPoint(x, y, _paint);
@@ -222,7 +219,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	public boolean saveToFile(File f) throws IOException {
 		FileOutputStream out = new FileOutputStream(f);
 		_image.compress(Bitmap.CompressFormat.PNG, 100, out); 
-			// The compression factor (100) is ignored for PNG
+		// The compression factor (100) is ignored for PNG
 	
 		out.close();
 		

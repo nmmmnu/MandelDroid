@@ -70,7 +70,11 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
+	private void _setFColor(int type){
+		_surface.setFractalColor( FColorFactory.getInstance(type) );
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -104,7 +108,7 @@ public class MainActivity extends Activity {
 			break;
 
 		case R.id.m_fractal_colors_standard:
-			_surface.setFractalColor(new FColorStandard());
+			_setFColor( FColorFactory.COLOR_STANDARD );
 			
 			_surface.stopThread();
 			_surface.startThread();
@@ -112,7 +116,15 @@ public class MainActivity extends Activity {
 			break;
 
 		case R.id.m_fractal_colors_cosmos:
-			_surface.setFractalColor(new FColorCosmosNew());
+			_setFColor( FColorFactory.COLOR_COSMOS );
+			
+			_surface.stopThread();
+			_surface.startThread();
+
+			break;
+
+		case R.id.m_fractal_colors_retro:
+			_setFColor( FColorFactory.COLOR_RETRO );
 			
 			_surface.stopThread();
 			_surface.startThread();
@@ -120,7 +132,7 @@ public class MainActivity extends Activity {
 			break;
 
 		case R.id.m_fractal_colors_none:
-			_surface.setFractalColor(new FColorNone());
+			_setFColor( FColorFactory.COLOR_NONE );
 			
 			_surface.stopThread();
 			_surface.startThread();
@@ -149,7 +161,48 @@ public class MainActivity extends Activity {
 
 		}
 
+		int tid = _checkTouristicPlace(id);
+		if (tid > 0){
+			_menuSetMemento(tid);
+			
+			return true;
+		}
+		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private int _checkTouristicPlace(int id){
+		switch(id){
+		case R.id.m_MB_BIG_PICTURE								: return MandelbrotMementoFactory.MB_BIG_PICTURE;
+		case R.id.m_MB_BULB_MANDELBROT							: return MandelbrotMementoFactory.MB_BULB_MANDELBROT;
+		case R.id.m_MB_ELEPHANT_VALLEY							: return MandelbrotMementoFactory.MB_ELEPHANT_VALLEY;
+		case R.id.m_MB_SEAHORSE_VALLEY							: return MandelbrotMementoFactory.MB_SEAHORSE_VALLEY;
+		case R.id.m_MB_TRIPPLE_SPIRAL							: return MandelbrotMementoFactory.MB_TRIPPLE_SPIRAL;
+		case R.id.m_MB_IMPERIAL_ORB_VALLEY						: return MandelbrotMementoFactory.MB_IMPERIAL_ORB_VALLEY;
+		case R.id.m_BS_BIG_PICTURE								: return MandelbrotMementoFactory.BS_BIG_PICTURE;
+		case R.id.m_BS_SHIP_IN_ARMADA							: return MandelbrotMementoFactory.BS_SHIP_IN_ARMADA;
+		case R.id.m_BS_MYSTERIOUS_LADY							: return MandelbrotMementoFactory.BS_MYSTERIOUS_LADY;
+		case R.id.m_BS_HIDDEN_TREASURE1							: return MandelbrotMementoFactory.BS_HIDDEN_TREASURE1;
+		case R.id.m_BS_HIDDEN_FOREST							: return MandelbrotMementoFactory.BS_HIDDEN_FOREST;
+		case R.id.m_BS_HIDDEN_TREASURE2							: return MandelbrotMementoFactory.BS_HIDDEN_TREASURE2;
+		case R.id.m_BS_OVALS									: return MandelbrotMementoFactory.BS_OVALS;
+		case R.id.m_PBS_BIG_PICTURE								: return MandelbrotMementoFactory.PBS_BIG_PICTURE;
+		case R.id.m_PBS_FIRST_IFS_TREE_CARDIOUD					: return MandelbrotMementoFactory.PBS_FIRST_IFS_TREE_CARDIOUD;
+		case R.id.m_PBS_RHOMBUS_INSIDE_FIRST_IFS_TREE_CARDIOUD	: return MandelbrotMementoFactory.PBS_RHOMBUS_INSIDE_FIRST_IFS_TREE_CARDIOUD;
+		case R.id.m_PBS_COMMON_IFS_TREE_CARDIOUD				: return MandelbrotMementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
+		case R.id.m_PBS_SPIRAL_GALAXY							: return MandelbrotMementoFactory.PBS_SPIRAL_GALAXY;
+		case R.id.m_PBS_HUMANOID_CREATURE_THE_ALIEN				: return MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_ALIEN;
+		case R.id.m_PBS_HUMANOID_CREATURE_THE_MINOTAUR			: return MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_MINOTAUR;
+		case R.id.m_PBS_HUMANOID_CREATURE_THE_SKULL				: return MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_SKULL;
+		case R.id.m_PBS_BUTTERFLIES_BIG_PICTURE					: return MandelbrotMementoFactory.PBS_BUTTERFLIES_BIG_PICTURE;
+		case R.id.m_PBS_BUTTERFLY								: return MandelbrotMementoFactory.PBS_BUTTERFLY;
+		case R.id.m_PBS_APOLONIAN_GASKET						: return MandelbrotMementoFactory.PBS_APOLONIAN_GASKET;
+		case R.id.m_PBS_SIERPINSKI								: return MandelbrotMementoFactory.PBS_SIERPINSKI;
+		case R.id.m_PBS_IFS_SQUARE								: return MandelbrotMementoFactory.PBS_IFS_SQUARE;
+		case R.id.m_PBS_BAOBAB									: return MandelbrotMementoFactory.PBS_BAOBAB;
+		}
+		
+		return 0;
 	}
 
 	@Override
@@ -163,6 +216,9 @@ public class MainActivity extends Activity {
 	}
 	
 	private static int __str2int(String s, int def){
+		if (s == null)
+			return def;
+		
 		try{
 			return Integer.parseInt(s);
 		}catch(NumberFormatException e){
@@ -205,23 +261,24 @@ public class MainActivity extends Activity {
 		
 		
 		
-		final FColor fc;
-		
 		switch(fractalColor){		
 		case 1:
-			fc = new FColorCosmosNew();
+			_setFColor(FColorFactory.COLOR_COSMOS);
+
 			break;
 		
 		case 2:
-			fc = new FColorNone();
+			_setFColor(FColorFactory.COLOR_RETRO);
+			break;
+
+		case 100:
+			_setFColor(FColorFactory.COLOR_NONE);
 			break;
 
 		case 0:
 		default:
-			fc = new FColorStandard();
+			_setFColor(FColorFactory.COLOR_STANDARD);
 		}
-
-		_surface.setFractalColor(fc);
 		
 		
 		
@@ -235,6 +292,14 @@ public class MainActivity extends Activity {
 
 	private void _menuResetCoordinates() {
 		_surface.resetCoordinates();		
+	}
+	
+	private void _menuSetMemento(int tid){
+		Memento m = MandelbrotMementoFactory.getInstance(tid);
+		_surface.setFractalMemento(m);
+
+		_surface.stopThread();
+		_surface.startThread();
 	}
 
 	private void _menuCopyToClipboard() {
@@ -259,7 +324,7 @@ public class MainActivity extends Activity {
 
 			_surface.saveToFile(f);
 			
-			_toaster(getString(R.string.t_save_image_ok) + f.getName());
+			_toaster(getString(R.string.t_save_image_ok) + " " + f.getName());
 		}catch(IOException e){
 			_toaster(getString(R.string.t_save_image_err));
 		}

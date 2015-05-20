@@ -21,23 +21,59 @@
                   android:title="@string/m_fractal_colors_standard" />
             <item android:id="@+id/m_fractal_colors_cosmos"
                   android:title="@string/m_fractal_colors_cosmos" />
+            <item android:id="@+id/m_fractal_colors_retro"
+                  android:title="@string/m_fractal_colors_retro" />
             <item android:id="@+id/m_fractal_colors_none"
                   android:title="@string/m_fractal_colors_none" />
-            </menu>
+		</menu>
     </item>
     
     <item
         android:id="@+id/m_reset"
         android:title="@string/m_reset" />
+    
     <item
         android:id="@+id/m_places"
-        android:title="@string/m_places" />
+        android:title="@string/m_places">
+        <menu>
+			<item android:id="@+id/m_MB_BIG_PICTURE"								android:title="@string/m_MB_BIG_PICTURE"								/>
+			<item android:id="@+id/m_MB_BULB_MANDELBROT"							android:title="@string/m_MB_BULB_MANDELBROT"							/>
+			<item android:id="@+id/m_MB_ELEPHANT_VALLEY"							android:title="@string/m_MB_ELEPHANT_VALLEY"							/>
+			<item android:id="@+id/m_MB_SEAHORSE_VALLEY"							android:title="@string/m_MB_SEAHORSE_VALLEY"							/>
+			<item android:id="@+id/m_MB_TRIPPLE_SPIRAL"								android:title="@string/m_MB_TRIPPLE_SPIRAL"								/>
+			<item android:id="@+id/m_MB_IMPERIAL_ORB_VALLEY"						android:title="@string/m_MB_IMPERIAL_ORB_VALLEY"						/>
+			<item android:id="@+id/m_BS_BIG_PICTURE"								android:title="@string/m_BS_BIG_PICTURE"								/>
+			<item android:id="@+id/m_BS_SHIP_IN_ARMADA"								android:title="@string/m_BS_SHIP_IN_ARMADA"								/>
+			<item android:id="@+id/m_BS_MYSTERIOUS_LADY"							android:title="@string/m_BS_MYSTERIOUS_LADY"							/>
+			<item android:id="@+id/m_BS_HIDDEN_TREASURE1"							android:title="@string/m_BS_HIDDEN_TREASURE1"							/>
+			<item android:id="@+id/m_BS_HIDDEN_FOREST"								android:title="@string/m_BS_HIDDEN_FOREST"								/>
+			<item android:id="@+id/m_BS_HIDDEN_TREASURE2"							android:title="@string/m_BS_HIDDEN_TREASURE2"							/>
+			<item android:id="@+id/m_BS_OVALS"										android:title="@string/m_BS_OVALS"										/>
+			<item android:id="@+id/m_PBS_BIG_PICTURE"								android:title="@string/m_PBS_BIG_PICTURE"								/>
+			<item android:id="@+id/m_PBS_FIRST_IFS_TREE_CARDIOUD"					android:title="@string/m_PBS_FIRST_IFS_TREE_CARDIOUD"					/>
+			<item android:id="@+id/m_PBS_RHOMBUS_INSIDE_FIRST_IFS_TREE_CARDIOUD"	android:title="@string/m_PBS_RHOMBUS_INSIDE_FIRST_IFS_TREE_CARDIOUD"	/>
+			<item android:id="@+id/m_PBS_COMMON_IFS_TREE_CARDIOUD"					android:title="@string/m_PBS_COMMON_IFS_TREE_CARDIOUD"					/>
+			<item android:id="@+id/m_PBS_SPIRAL_GALAXY"								android:title="@string/m_PBS_SPIRAL_GALAXY"								/>
+			<item android:id="@+id/m_PBS_HUMANOID_CREATURE_THE_ALIEN"				android:title="@string/m_PBS_HUMANOID_CREATURE_THE_ALIEN"				/>
+			<item android:id="@+id/m_PBS_HUMANOID_CREATURE_THE_MINOTAUR"			android:title="@string/m_PBS_HUMANOID_CREATURE_THE_MINOTAUR"			/>
+			<item android:id="@+id/m_PBS_HUMANOID_CREATURE_THE_SKULL"				android:title="@string/m_PBS_HUMANOID_CREATURE_THE_SKULL"				/>
+			<item android:id="@+id/m_PBS_BUTTERFLIES_BIG_PICTURE"					android:title="@string/m_PBS_BUTTERFLIES_BIG_PICTURE"					/>
+			<item android:id="@+id/m_PBS_BUTTERFLY"									android:title="@string/m_PBS_BUTTERFLY"									/>
+			<item android:id="@+id/m_PBS_APOLONIAN_GASKET"							android:title="@string/m_PBS_APOLONIAN_GASKET"							/>
+			<item android:id="@+id/m_PBS_SIERPINSKI"								android:title="@string/m_PBS_SIERPINSKI"								/>
+			<item android:id="@+id/m_PBS_IFS_SQUARE"								android:title="@string/m_PBS_IFS_SQUARE"								/>
+			<item android:id="@+id/m_PBS_BAOBAB"									android:title="@string/m_PBS_BAOBAB"									/>
+   		</menu>
+	</item>
+	    
     <item
         android:id="@+id/m_settings"
         android:title="@string/m_settings" />
+    
     <item
         android:id="@+id/m_save_image"
         android:title="@string/m_save_image" />
+    
     <item
         android:id="@+id/m_copy_coordinates"
         android:title="@string/m_copy_coordinates" />

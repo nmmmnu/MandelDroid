@@ -9,7 +9,11 @@ public class FColorStandard implements FColor{
 	}
 
 	@Override
-	public int convertColor(int color, int maxcolor) {
-		return _transIt(color, maxcolor);
+	public int[] convertColor(int color, int maxcolor) {
+		int a = _transIt(color, maxcolor);
+
+		int x[] = {a, a, a};
+
+		return x;
 	}
 }
