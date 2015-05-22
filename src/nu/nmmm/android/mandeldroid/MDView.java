@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-import java.io.*;
-
 import nu.nmmm.android.mandelbrot.*;
 
 class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDetectorConsumer {
@@ -43,7 +41,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	private boolean _pixelDebugPreview =  false;
 		
 	@SuppressLint("ClickableViewAccessibility")
-	public MDView(Context context, int width, int height, FColor fractalColor) {
+	public MDView(Context context, int width, int height, FractalCalculator fractalCalc, FColor fractalColor) {
 		super(context);
 		
 		_mgd = new MyGestureDetector(context, this, SCALE_MIN, SCALE_MAX);
@@ -64,14 +62,17 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	    
 	    this._fractalColor = fractalColor;
 
-		FractalCalculator fractalCalc = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 256);
 		this._fractalManager = new FractalManager(fractalCalc, _width, _height);
 	}
-	
+	/*
 	public MDView(Context context, int width, int height) {
-	    this(context, width, height, new FColorStandard() );
+	    this(context, 
+	    		width, height, 
+	    		new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 256),
+	    		new FColorStandard() 
+	    );
 	}
-	
+	*/
 	public void setPixelDebugPreview(boolean pixelDebugPreview){
 		this._pixelDebugPreview = pixelDebugPreview;
 	}
@@ -130,7 +131,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	// Runnable
 	
 	
-	public void startThread(){
+	void startThread(){
 		if (_threadRunning )
 			return;
 
@@ -140,7 +141,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 		_thread.start();	
 	}
 
-	public void stopThread(){
+	void stopThread(){
 		if (! _threadRunning )
 			return;
 		
@@ -164,6 +165,11 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 		_threadRunning = false;
 	}
 
+	public void refresh(){
+		stopThread();
+		startThread();
+	}
+	
 	// MyGestureDetectorConsumer
 	
 	float _gScale = 1;
@@ -198,31 +204,20 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 		_gDeltaY = 0;
 		
 		_fractalManager.setCenterRelativeToScreen(-dx, -dy, 1 / scale);	
-		
-		stopThread();
-		startThread();
+		refresh();
 	}
 
 	// Menu
 	
 	public void resetCoordinates() {
 		_fractalManager.setCenter(0, 0, 2.2);
-		
-		stopThread();
-		startThread();
 	}
 
 	public double[] getCoordinate() {
 		return _fractalManager.getCenter();
 	}
 
-	public boolean saveToFile(File f) throws IOException {
-		FileOutputStream out = new FileOutputStream(f);
-		_image.compress(Bitmap.CompressFormat.PNG, 100, out); 
-		// The compression factor (100) is ignored for PNG
-	
-		out.close();
-		
-		return true;
+	public Bitmap getImage(){
+		return _image;
 	}
 }

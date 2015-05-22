@@ -11,7 +11,7 @@
                   android:title="@string/m_fractal_type_bs" />
             <item android:id="@+id/m_fractal_type_pbs"
                   android:title="@string/m_fractal_type_pbs" />
-            </menu>
+		</menu>
     </item>
     
     <item android:id="@+id/m_fractal_colors"
@@ -25,6 +25,26 @@
                   android:title="@string/m_fractal_colors_retro" />
             <item android:id="@+id/m_fractal_colors_none"
                   android:title="@string/m_fractal_colors_none" />
+		</menu>
+    </item>
+    
+	<item android:id="@+id/m_max_iterations"
+          android:title="@string/m_max_iterations" >
+        <menu>
+            <item android:id="@+id/m_max_iterations_32"
+                  android:title="@string/m_max_iterations_32" />
+            <item android:id="@+id/m_max_iterations_64"
+                  android:title="@string/m_max_iterations_64" />
+            <item android:id="@+id/m_max_iterations_128"
+                  android:title="@string/m_max_iterations_128" />
+            <item android:id="@+id/m_max_iterations_256"
+                  android:title="@string/m_max_iterations_256" />
+            <item android:id="@+id/m_max_iterations_512"
+                  android:title="@string/m_max_iterations_512" />
+            <item android:id="@+id/m_max_iterations_1024"
+                  android:title="@string/m_max_iterations_1024" />
+            <item android:id="@+id/m_max_iterations_2048"
+                  android:title="@string/m_max_iterations_2048" />
 		</menu>
     </item>
     
@@ -73,6 +93,10 @@
     <item
         android:id="@+id/m_save_image"
         android:title="@string/m_save_image" />
+    
+    <item
+        android:id="@+id/m_set_wallpaper"
+        android:title="@string/m_set_wallpaper" />
     
     <item
         android:id="@+id/m_copy_coordinates"
