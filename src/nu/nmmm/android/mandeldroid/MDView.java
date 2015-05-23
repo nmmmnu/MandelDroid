@@ -7,8 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
-
 import nu.nmmm.android.mandelbrot.*;
+import nu.nmmm.android.mandelbrot.color.FColor;
+import nu.nmmm.android.mandelbrot.color.RGB;
 
 class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDetectorConsumer {
 	@SuppressWarnings("unused")
@@ -31,6 +32,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	private Bitmap _image;
 	private Canvas _imageCanvas;
 	private Paint _paint;
+	private RGB _rgb = new RGB();
 	
 	// dummy used onDraw()
 	private Paint _paint2;
@@ -64,15 +66,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 
 		this._fractalManager = new FractalManager(fractalCalc, _width, _height);
 	}
-	/*
-	public MDView(Context context, int width, int height) {
-	    this(context, 
-	    		width, height, 
-	    		new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 256),
-	    		new FColorStandard() 
-	    );
-	}
-	*/
+	
 	public void setPixelDebugPreview(boolean pixelDebugPreview){
 		this._pixelDebugPreview = pixelDebugPreview;
 	}
@@ -100,9 +94,9 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 
 	@Override
 	public boolean putPixel(int x, int y, int color, int maxcolor, int squareSize) {
-		int a[] = _fractalColor.convertColor(color, maxcolor);
+		_fractalColor.convertColor(color, maxcolor, _rgb);
 		
-		_paint.setARGB(0xFF, a[0], a[1], a[2]);
+		_paint.setARGB(0xFF, _rgb.r, _rgb.g, _rgb.b);
 		
 		if (squareSize <= 1){
 			_imageCanvas.drawPoint(x, y, _paint);

@@ -13,7 +13,10 @@
     <string name="m_fractal_colors_standard">Standard</string>
     <string name="m_fractal_colors_cosmos">Cosmos</string>
     <string name="m_fractal_colors_retro">Retro</string>
-	<string name="m_fractal_colors_none">None (Educational)</string>
+    <string name="m_fractal_colors_reverse">Reverse (works well with low iterations)</string>
+    <string name="m_fractal_colors_fire">Fire (works well with Burning Ship)</string>
+	<string name="m_fractal_colors_ice">Ice</string>
+	<string name="m_fractal_colors_none">None (educational)</string>
 
 	<string name="m_max_iterations">Max Iterations</string>
 	<string name="m_max_iterations_32">32 (intentionally low)</string>

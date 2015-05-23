@@ -3,10 +3,8 @@ package nu.nmmm.android.mandeldroid;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +12,8 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 import nu.nmmm.android.mandelbrot.*;
+import nu.nmmm.android.mandelbrot.color.FColor;
+import nu.nmmm.android.mandelbrot.color.FColorFactory;
 
 public class MainActivity extends Activity {
 	private MDView _surface;
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 		
 		FractalCalculator fractalCalculator = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 256);
 		
-	    FColor fractalColor = new FColorStandard();
+	    FColor fractalColor = FColorFactory.getInstance(FColorFactory.COLOR_STANDARD);
 
 		this._surface = new MDView(this, width, height, fractalCalculator, fractalColor);
 		
@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
 		
 		this._menu = new MyMenuActions(getApplicationContext(), _surface);
 
-		_refreshFromPreferences();
+		_menu.refreshFromPreferences();
 	}
 	
 	private void _setFullScreen(){
@@ -114,32 +114,13 @@ public class MainActivity extends Activity {
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data){
 		switch (requestCode){
 		case R.id.m_settings:
-			_refreshFromPreferences();
+			_menu.refreshFromPreferences();
 			break;
 			
 		}
 	}
 	
-	private static int __str2int(String s, int def){
-		if (s == null)
-			return def;
-		
-		try{
-			return Integer.parseInt(s);
-		}catch(NumberFormatException e){
-			return def;
-		}
-	}
 	
-	private void _refreshFromPreferences() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
-		int maxIterations = __str2int( prefs.getString("max_iterations", "256"), 256);
-		int fractalType = __str2int( prefs.getString("fractal_type", "0"), 0 );
-		int fractalColor = __str2int( prefs.getString("fractal_color", "0"), 0 );
-		boolean pixelPreview = prefs.getBoolean("pixel_preview", false);
-		
-		_menu.checkPref(fractalType, fractalColor, maxIterations, pixelPreview);
-	}
+
 	
 }

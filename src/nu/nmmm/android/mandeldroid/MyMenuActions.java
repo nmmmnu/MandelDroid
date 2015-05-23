@@ -4,38 +4,67 @@ import android.app.WallpaperManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
+
 import java.io.*;
+
 import nu.nmmm.android.mandelbrot.*;
+import nu.nmmm.android.mandelbrot.color.FColorFactory;
 
 class MyMenuActions {
 	final private static String FILE_PREFIX = "mandeldroid.";
 
 	private Context _context;
 	private MDView _surface;
+	private SharedPreferences _prefs;
 
 	private boolean _enableRefresh = true;
 	
 	public MyMenuActions(Context context, MDView surface) {
 		this._context = context;
 		this._surface = surface;
+		
+		this._prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
 	private void _setFractalType(int type){
 		_surface.setFractalType(type);
+		_prefsPutString("fractal_type", type);
 		_refresh();
 	}
 	
 	private void _setFColor(int type){
 		_surface.setFractalColor( FColorFactory.getInstance(type) );
+		_prefsPutString("fractal_color", type);
+		_refresh();
+	}
+
+	private void _prefsPutString(String key, int value){
+		Editor editor = _prefs.edit();
+		editor.putString(key, "" + value);
+		editor.commit();
+	}
+	
+	private void _prefsPutBoolean(String key, boolean value){
+		Editor editor = _prefs.edit();
+		editor.putBoolean(key, value);
+		editor.commit();
+	}
+
+	private void _setIterations(int iterations){
+		_surface.setFractalIterations(iterations);
+		_prefsPutString("max_iterations", iterations);
 		_refresh();
 	}
 	
-	private void _setIterations(int iterations){
-		_surface.setFractalIterations(iterations);
-		_refresh();
+	private void _setPixelDebugPreview(boolean pixelPreview){
+		_surface.setPixelDebugPreview(pixelPreview);
+		_prefsPutBoolean("pixel_preview", pixelPreview);
 	}
 	
 	private void _resetCoordinates() {
@@ -92,7 +121,23 @@ class MyMenuActions {
 		_toaster(_context.getString(R.string.t_copy_to_clipboard_ok));		
 	}
 
-	public void checkPref(int fractalType, int fractalColor, int maxIterations, boolean pixelPreview){
+	private static int __str2int(String s, int def){
+		if (s == null)
+			return def;
+		
+		try{
+			return Integer.parseInt(s);
+		}catch(NumberFormatException e){
+			return def;
+		}
+	}
+
+	public void refreshFromPreferences() {
+		int maxIterations		= __str2int( _prefs.getString("max_iterations", "256"), 256);
+		int fractalType			= __str2int( _prefs.getString("fractal_type", "0"), 0 );
+		int fractalColor		= __str2int( _prefs.getString("fractal_color", "0"), 0 );
+		boolean pixelPreview = _prefs.getBoolean("pixel_preview", false);
+		
 		_enableRefresh = false;
 		
 		_setIterations(maxIterations);
@@ -107,12 +152,15 @@ class MyMenuActions {
 		switch(fractalColor){		
 		case 1:		_setFColor(FColorFactory.COLOR_COSMOS);		break;
 		case 2:		_setFColor(FColorFactory.COLOR_RETRO);		break;
+		case 3:		_setFColor(FColorFactory.COLOR_REVERSE);	break;
+		case 4:		_setFColor(FColorFactory.COLOR_FIRE);		break;
+		case 5:		_setFColor(FColorFactory.COLOR_ICE);		break;
 		case 100:	_setFColor(FColorFactory.COLOR_NONE);		break;
 		case 0:
 		default:	_setFColor(FColorFactory.COLOR_STANDARD);
 		}
 
-		_surface.setPixelDebugPreview(pixelPreview);
+		_setPixelDebugPreview(pixelPreview);
 
 		_enableRefresh = true;
 
@@ -148,6 +196,18 @@ class MyMenuActions {
 
 		case R.id.m_fractal_colors_retro:
 			_setFColor( FColorFactory.COLOR_RETRO );
+			return true;
+
+		case R.id.m_fractal_colors_reverse:
+			_setFColor( FColorFactory.COLOR_REVERSE );
+			return true;
+
+		case R.id.m_fractal_colors_fire:
+			_setFColor( FColorFactory.COLOR_FIRE );
+			return true;
+
+		case R.id.m_fractal_colors_ice:
+			_setFColor( FColorFactory.COLOR_ICE );
 			return true;
 
 		case R.id.m_fractal_colors_none:

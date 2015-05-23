@@ -51,10 +51,10 @@ public class FractalCalculatorMandelbrot implements FractalCalculator{
 
 			case TYPE_BURNINGSHIP:
 				if (zx < 0)
-					zx = Math.abs(zx);
+					zx = -zx;
 				
 				if (zy < 0)
-					zy = Math.abs(zy);
+					zy = -zy;
 				
 				break;
 
@@ -62,6 +62,10 @@ public class FractalCalculatorMandelbrot implements FractalCalculator{
 				if (zy < 0)
 					zy = -zy;
 
+				break;
+
+			default:
+				// none
 				break;
 			}
 
