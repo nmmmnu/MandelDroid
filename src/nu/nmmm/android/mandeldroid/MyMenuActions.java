@@ -143,21 +143,27 @@ class MyMenuActions {
 		_setIterations(maxIterations);
 		
 		switch(fractalType){
+		case 0:		_setFractalType(FractalCalculatorMandelbrot.TYPE_CLASSIC);			break;
 		case 1:		_setFractalType(FractalCalculatorMandelbrot.TYPE_BURNINGSHIP);		break;
 		case 2:		_setFractalType(FractalCalculatorMandelbrot.TYPE_PERPENDICULAR);	break;
-		case 0:
+		
 		default:	_setFractalType(FractalCalculatorMandelbrot.TYPE_CLASSIC);
 		}
 		
 		switch(fractalColor){		
-		case 1:		_setFColor(FColorFactory.COLOR_COSMOS);		break;
-		case 2:		_setFColor(FColorFactory.COLOR_RETRO);		break;
-		case 3:		_setFColor(FColorFactory.COLOR_REVERSE);	break;
-		case 4:		_setFColor(FColorFactory.COLOR_FIRE);		break;
-		case 5:		_setFColor(FColorFactory.COLOR_ICE);		break;
-		case 100:	_setFColor(FColorFactory.COLOR_NONE);		break;
-		case 0:
-		default:	_setFColor(FColorFactory.COLOR_STANDARD);
+		case FColorFactory.COLOR_STANDARD:		_setFColor(FColorFactory.COLOR_STANDARD);	break;
+		case FColorFactory.COLOR_COSMOS:		_setFColor(FColorFactory.COLOR_COSMOS);		break;
+		case FColorFactory.COLOR_REVERSE:		_setFColor(FColorFactory.COLOR_REVERSE);	break;
+		case FColorFactory.COLOR_CYCLIC:		_setFColor(FColorFactory.COLOR_CYCLIC);		break;
+		case FColorFactory.COLOR_RETRO:			_setFColor(FColorFactory.COLOR_RETRO);		break;
+		
+		case FColorFactory.COLOR_FIRE:			_setFColor(FColorFactory.COLOR_FIRE);		break;
+		case FColorFactory.COLOR_ICE:			_setFColor(FColorFactory.COLOR_ICE);		break;
+		case FColorFactory.COLOR_TOURQUOISE:	_setFColor(FColorFactory.COLOR_TOURQUOISE);	break;
+		
+		case FColorFactory.COLOR_NONE:			_setFColor(FColorFactory.COLOR_NONE);		break;
+		
+		default:								_setFColor(FColorFactory.COLOR_STANDARD);
 		}
 
 		_setPixelDebugPreview(pixelPreview);
@@ -194,12 +200,16 @@ class MyMenuActions {
 			_setFColor( FColorFactory.COLOR_COSMOS );
 			return true;
 
-		case R.id.m_fractal_colors_retro:
-			_setFColor( FColorFactory.COLOR_RETRO );
-			return true;
-
 		case R.id.m_fractal_colors_reverse:
 			_setFColor( FColorFactory.COLOR_REVERSE );
+			return true;
+
+		case R.id.m_fractal_colors_cyclic:
+			_setFColor( FColorFactory.COLOR_CYCLIC );
+			return true;
+
+		case R.id.m_fractal_colors_retro:
+			_setFColor( FColorFactory.COLOR_RETRO );
 			return true;
 
 		case R.id.m_fractal_colors_fire:
@@ -208,6 +218,10 @@ class MyMenuActions {
 
 		case R.id.m_fractal_colors_ice:
 			_setFColor( FColorFactory.COLOR_ICE );
+			return true;
+
+		case R.id.m_fractal_colors_turquoise:
+			_setFColor( FColorFactory.COLOR_TOURQUOISE );
 			return true;
 
 		case R.id.m_fractal_colors_none:

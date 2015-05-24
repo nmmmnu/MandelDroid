@@ -1,7 +1,5 @@
 package nu.nmmm.android.mandelbrot.color;
 
-
-
 class FColorCosmos implements FColor{
 	protected int _transIt(int color, int maxcolor){
 		return RGB.MAX_COLOR;

@@ -21,15 +21,21 @@
                   android:title="@string/m_fractal_colors_standard" />
             <item android:id="@+id/m_fractal_colors_cosmos"
                   android:title="@string/m_fractal_colors_cosmos" />
-            <item android:id="@+id/m_fractal_colors_retro"
-                  android:title="@string/m_fractal_colors_retro" />
             <item android:id="@+id/m_fractal_colors_reverse"
                   android:title="@string/m_fractal_colors_reverse" />
+			<item android:id="@+id/m_fractal_colors_cyclic"
+                  android:title="@string/m_fractal_colors_cyclic" />
+            <item android:id="@+id/m_fractal_colors_retro"
+                  android:title="@string/m_fractal_colors_retro" />
+            
             <item android:id="@+id/m_fractal_colors_fire"
                   android:title="@string/m_fractal_colors_fire" />
 			<item android:id="@+id/m_fractal_colors_ice"
                   android:title="@string/m_fractal_colors_ice" />
-            <item android:id="@+id/m_fractal_colors_none"
+			<item android:id="@+id/m_fractal_colors_turquoise"
+                  android:title="@string/m_fractal_colors_turquoise" />
+			
+			<item android:id="@+id/m_fractal_colors_none"
                   android:title="@string/m_fractal_colors_none" />
 		</menu>
     </item>

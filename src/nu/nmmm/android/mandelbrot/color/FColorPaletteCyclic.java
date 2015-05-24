@@ -6,10 +6,12 @@ import java.util.List;
 public class FColorPaletteCyclic implements FColor{
 	final public static int COLOR_FIRE = 0;
 	final public static int COLOR_ICE = 1;
+	final public static int COLOR_TURQUOISE = 2;
 	
 	final private static int PALETTE_COUNT = 64;
 	
 	private List <RGB>_list = new ArrayList<RGB>();
+	private int _paletteCount;
 	
 	public FColorPaletteCyclic(int type){
 		_setPalette(type);
@@ -20,13 +22,16 @@ public class FColorPaletteCyclic implements FColor{
 		
 		FPalette pal = new FPalette(colors, PALETTE_COUNT);
 		pal.calc(this._list);
+		
+		_paletteCount = _list.size();
 	}
 	
 	private  RGB[] _getPalette(int type){
 		switch(type){
-		case COLOR_ICE:		return _getPaletteIce();
+		case COLOR_ICE:			return _getPaletteIce();
+		case COLOR_TURQUOISE:	return _getPaletteTurqise();
 		case COLOR_FIRE:
-		default:			return _getPaletteFire();
+		default:				return _getPaletteFire();
 		}
 	}
 	
@@ -50,6 +55,16 @@ public class FColorPaletteCyclic implements FColor{
 		return colors;
 	}
 
+	private RGB[] _getPaletteTurqise(){
+		RGB[] colors = {
+				new RGB(0x77, 0xff, 0x77),		// greenish
+				new RGB(0x00, 0x00, 0xff),		// cyan
+				new RGB(0x77, 0xff, 0x77)		// greenish
+		};
+
+		return colors;
+	}
+
 	@Override
 	public RGB convertColor(int color, int maxcolor, RGB rgb) {
 		if (color == maxcolor){
@@ -58,7 +73,7 @@ public class FColorPaletteCyclic implements FColor{
 			return rgb;
 		}
 
-		int location = color % PALETTE_COUNT;
+		int location = color % _paletteCount;
 		RGB a = _list.get(location);
 		rgb.setColor(a);
 
