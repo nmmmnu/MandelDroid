@@ -2,9 +2,10 @@ package nu.nmmm.android.mandelbrot;
 
 
 public class FractalCalculatorMandelbrot implements FractalCalculator{
-	public final static int TYPE_CLASSIC		= 0;
-	public final static int TYPE_BURNINGSHIP	= 1;
-	public final static int TYPE_PERPENDICULAR	= 2;
+	public final static int TYPE_CLASSIC					= 0;
+	public final static int TYPE_BURNINGSHIP				= 1;
+	public final static int TYPE_PERPENDICULAR_BURNINGSHIP	= 2;
+	public final static int TYPE_PERPENDICULAR_MANDELBROT	= 3;
 	
 	private final static double ESCAPE2 = 4;
 	
@@ -58,10 +59,16 @@ public class FractalCalculatorMandelbrot implements FractalCalculator{
 				
 				break;
 
-			case TYPE_PERPENDICULAR:
+			case TYPE_PERPENDICULAR_BURNINGSHIP:
 				if (zy < 0)
 					zy = -zy;
 
+				break;
+
+			case TYPE_PERPENDICULAR_MANDELBROT:
+				if (zx > 0)
+					zx = -zx;
+				
 				break;
 
 			default:
