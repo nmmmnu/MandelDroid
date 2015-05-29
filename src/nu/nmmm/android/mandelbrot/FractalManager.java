@@ -2,16 +2,14 @@ package nu.nmmm.android.mandelbrot;
 
 
 public class FractalManager {
-	public final static int TYPE_CLASSIC					= 0;
-	public final static int TYPE_BURNINGSHIP				= 1;
-	public final static int TYPE_PERPENDICULAR_BURNINGSHIP	= 2;
-	public final static int TYPE_PERPENDICULAR_MANDELBROT	= 3;
-
 	// must be power of 2
 	// 64 is better for most cases
 	final static int PREVIEW_SQUARE_MAX = 1 << 6;
 	
-	private FractalCalculator _calc;
+	private FractalCalculator _fc;
+	
+	private int _type;
+	private int _iterations;
 	
 	private double _centerX;
 	private double _centerY;
@@ -20,15 +18,11 @@ public class FractalManager {
 	private int _screenWidth = 0;
 	private int _screenHeight = 0;
 	private double _screenRes = 0;
-		
-	public FractalManager(FractalCalculator calc){
-		this._calc = calc;
-		
-		this.setCenter(0, 0, 2.2);
-	}
 	
-	public FractalManager(FractalCalculator calc, int screenWidth, int screenHeight){
-		this(calc);
+	public FractalManager(int type, int screenWidth, int screenHeight){
+		this.setType(type);
+		this.setIterations(32);
+		this.setCenter(0, 0, 2.2);
 		
 		setScreenSize(screenWidth, screenHeight);
 	}
@@ -62,11 +56,12 @@ public class FractalManager {
 	}
 
 	public void setIterations(int iterations){
-		this._calc.setIterations(iterations);
+		this._iterations = iterations;
 	}
 
 	public void setType(int type){
-		this._calc.setType(type);
+		this._type = type;
+		this._fc = FractalCalculatorFactory.getInstance(type);
 	}
 
 	private boolean _generate(FractalManagerPlot plot, int step, int stepMAX){		
@@ -81,7 +76,7 @@ public class FractalManager {
 		
 		// iteration calculations
 		
-		int maxcolor = this._calc.getIterations();
+		int maxcolor = _iterations;
 		
 		int x, y;
 
@@ -93,7 +88,7 @@ public class FractalManager {
 				
 				double xr = startx + _screenRes * x;
 				
-				int color = _calc.Z(xr, yr);
+				int color = _fc.Z(xr, yr, _iterations);
 				
 				boolean ok = plot.putPixel(x, y, color, maxcolor, step);
 				
@@ -130,12 +125,12 @@ public class FractalManager {
 	
 	
 	public Memento getMemento(){
-		return new Memento(_calc.getType(), _calc.getIterations(), _centerX, _centerY, _halfWidthX);
+		return new Memento(_type, _iterations, _centerX, _centerY, _halfWidthX);
 	}
 
 	public boolean setMemento(Memento mem){
-		this._calc.setType(mem.type);
-		this._calc.setIterations(mem.iterations);
+		this.setType(mem.type);
+		this.setIterations(mem.iterations);
 		
 		this.setCenter(mem.x, mem.y, mem.hw);
 

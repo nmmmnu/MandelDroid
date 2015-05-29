@@ -39,7 +39,7 @@ class MyMenuActions {
 	}
 	
 	private void _setFColor(int type){
-		_surface.setFractalColor( FColorFactory.getInstance(type) );
+		_surface.setFractalColor(type);
 		_prefsPutString("fractal_color", type);
 		_refresh();
 	}
@@ -143,12 +143,12 @@ class MyMenuActions {
 		_setIterations(maxIterations);
 		
 		switch(fractalType){
-		case 0:		_setFractalType(FractalCalculator.TYPE_CLASSIC);						break;
-		case 1:		_setFractalType(FractalCalculator.TYPE_BURNINGSHIP);					break;
-		case 2:		_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_BURNINGSHIP);	break;
-		case 3:		_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_MANDELBROT);		break;
+		case 0:		_setFractalType(FractalCalculatorFactory.TYPE_MANDELBROT);					break;
+		case 1:		_setFractalType(FractalCalculatorFactory.TYPE_BURNINGSHIP);					break;
+		case 2:		_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP);	break;
+		case 3:		_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT);	break;
 		
-		default:	_setFractalType(FractalCalculator.TYPE_CLASSIC);
+		default:	_setFractalType(FractalCalculatorFactory.TYPE_MANDELBROT);
 		}
 		
 		switch(fractalColor){		
@@ -180,19 +180,19 @@ class MyMenuActions {
 		// check type
 		
 		case R.id.m_fractal_type_mandelbrot:
-			_setFractalType(FractalCalculator.TYPE_CLASSIC);
+			_setFractalType(FractalCalculatorFactory.TYPE_MANDELBROT);
 			return true;
 			
 		case R.id.m_fractal_type_bs:
-			_setFractalType(FractalCalculator.TYPE_BURNINGSHIP);
+			_setFractalType(FractalCalculatorFactory.TYPE_BURNINGSHIP);
 			return true;
 
 		case R.id.m_fractal_type_pbs:
-			_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_BURNINGSHIP);
+			_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP);
 			return true;
 		
 		case R.id.m_fractal_type_pm:
-			_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_MANDELBROT);
+			_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT);
 			return true;
 		
 		// check colors

@@ -78,10 +78,10 @@ public class MandelbrotMementoFactory {
 
 	// ====================================
 	
-	private final static int T_MB	=	FractalCalculator.TYPE_CLASSIC;
-	private final static int T_BS	=	FractalCalculator.TYPE_BURNINGSHIP;
-	private final static int T_PBS	=	FractalCalculator.TYPE_PERPENDICULAR_BURNINGSHIP;
-	private final static int T_PM	=	FractalCalculator.TYPE_PERPENDICULAR_MANDELBROT;
+	private final static int T_MB	=	FractalCalculatorFactory.TYPE_MANDELBROT;
+	private final static int T_BS	=	FractalCalculatorFactory.TYPE_BURNINGSHIP;
+	private final static int T_PBS	=	FractalCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP;
+	private final static int T_PM	=	FractalCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT;
 
 	private final static int IT_LO	=	64;
 	private final static int IT_ST	=	256;

@@ -11,11 +11,14 @@ import android.view.MenuItem;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
-import nu.nmmm.android.mandelbrot.*;
-import nu.nmmm.android.mandelbrot.color.FColor;
+
+import nu.nmmm.android.mandelbrot.FractalCalculatorFactory;
 import nu.nmmm.android.mandelbrot.color.FColorFactory;
 
 public class MainActivity extends Activity {
+	final private static int FRACTAL_TYPE   = FractalCalculatorFactory.TYPE_MANDELBROT;
+	final private static int FRACTAL_COLORS = FColorFactory.COLOR_STANDARD;
+	
 	private MDView _surface;
 	private MyMenuActions _menu;
 	private boolean _hasMenuButton;
@@ -31,12 +34,8 @@ public class MainActivity extends Activity {
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 		int width = metrics.widthPixels;
 		int height = metrics.heightPixels;
-		
-		FractalCalculator fractalCalculator = new FractalCalculator(FractalCalculator.TYPE_CLASSIC, 256);
-		
-	    FColor fractalColor = FColorFactory.getInstance(FColorFactory.COLOR_STANDARD);
 
-		this._surface = new MDView(this, width, height, fractalCalculator, fractalColor);
+		this._surface = new MDView(this, width, height, FRACTAL_TYPE, FRACTAL_COLORS);
 		
 		setContentView(_surface);
 		

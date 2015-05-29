@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.view.View;
 import nu.nmmm.android.mandelbrot.*;
 import nu.nmmm.android.mandelbrot.color.FColor;
+import nu.nmmm.android.mandelbrot.color.FColorFactory;
 import nu.nmmm.android.mandelbrot.color.RGB;
 
 class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDetectorConsumer {
@@ -43,7 +44,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	private boolean _pixelDebugPreview =  false;
 		
 	@SuppressLint("ClickableViewAccessibility")
-	public MDView(Context context, int width, int height, FractalCalculator fractalCalc, FColor fractalColor) {
+	public MDView(Context context, int width, int height, int fractalType, int fractalColor) {
 		super(context);
 		
 		_mgd = new MyGestureDetector(context, this, SCALE_MIN, SCALE_MAX);
@@ -62,9 +63,9 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	    this._paint2.setAntiAlias(false);
     	this._paint2.setColor(PIXEL_DEBUG_PREVIEW_COLOR);
 	    
-	    this._fractalColor = fractalColor;
+    	this.setFractalColor(fractalColor);
 
-		this._fractalManager = new FractalManager(fractalCalc, _width, _height);
+		this._fractalManager = new FractalManager(fractalType, _width, _height);
 	}
 	
 	public void setPixelDebugPreview(boolean pixelDebugPreview){
@@ -83,8 +84,8 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 		this._fractalManager.setType(type); 
 	}
 	
-	public void setFractalColor(FColor fractalColor){
-		this._fractalColor = fractalColor;
+	public void setFractalColor(int fractalColor){
+		this._fractalColor = FColorFactory.getInstance(fractalColor);;
 	}
 	
 	// FractalManagerPlot
