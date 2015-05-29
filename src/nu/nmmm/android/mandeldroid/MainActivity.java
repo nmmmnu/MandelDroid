@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 		int width = metrics.widthPixels;
 		int height = metrics.heightPixels;
 		
-		FractalCalculator fractalCalculator = new FractalCalculatorMandelbrot(FractalCalculatorMandelbrot.TYPE_CLASSIC, 256);
+		FractalCalculator fractalCalculator = new FractalCalculator(FractalCalculator.TYPE_CLASSIC, 256);
 		
 	    FColor fractalColor = FColorFactory.getInstance(FColorFactory.COLOR_STANDARD);
 

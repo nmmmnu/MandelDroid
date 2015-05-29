@@ -143,12 +143,12 @@ class MyMenuActions {
 		_setIterations(maxIterations);
 		
 		switch(fractalType){
-		case 0:		_setFractalType(FractalCalculatorMandelbrot.TYPE_CLASSIC);						break;
-		case 1:		_setFractalType(FractalCalculatorMandelbrot.TYPE_BURNINGSHIP);					break;
-		case 2:		_setFractalType(FractalCalculatorMandelbrot.TYPE_PERPENDICULAR_BURNINGSHIP);	break;
-		case 3:		_setFractalType(FractalCalculatorMandelbrot.TYPE_PERPENDICULAR_MANDELBROT);		break;
+		case 0:		_setFractalType(FractalCalculator.TYPE_CLASSIC);						break;
+		case 1:		_setFractalType(FractalCalculator.TYPE_BURNINGSHIP);					break;
+		case 2:		_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_BURNINGSHIP);	break;
+		case 3:		_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_MANDELBROT);		break;
 		
-		default:	_setFractalType(FractalCalculatorMandelbrot.TYPE_CLASSIC);
+		default:	_setFractalType(FractalCalculator.TYPE_CLASSIC);
 		}
 		
 		switch(fractalColor){		
@@ -180,19 +180,19 @@ class MyMenuActions {
 		// check type
 		
 		case R.id.m_fractal_type_mandelbrot:
-			_setFractalType(FractalCalculatorMandelbrot.TYPE_CLASSIC);
+			_setFractalType(FractalCalculator.TYPE_CLASSIC);
 			return true;
 			
 		case R.id.m_fractal_type_bs:
-			_setFractalType(FractalCalculatorMandelbrot.TYPE_BURNINGSHIP);
+			_setFractalType(FractalCalculator.TYPE_BURNINGSHIP);
 			return true;
 
 		case R.id.m_fractal_type_pbs:
-			_setFractalType(FractalCalculatorMandelbrot.TYPE_PERPENDICULAR_BURNINGSHIP);
+			_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_BURNINGSHIP);
 			return true;
 		
 		case R.id.m_fractal_type_pm:
-			_setFractalType(FractalCalculatorMandelbrot.TYPE_PERPENDICULAR_MANDELBROT);
+			_setFractalType(FractalCalculator.TYPE_PERPENDICULAR_MANDELBROT);
 			return true;
 		
 		// check colors
@@ -324,12 +324,18 @@ class MyMenuActions {
 		case R.id.m_BS_OVALS									: return MandelbrotMementoFactory.BS_OVALS;
 		
 		case R.id.m_BS_HIDDEN_FOREST2							: return MandelbrotMementoFactory.BS_HIDDEN_FOREST2;
+		
+		case R.id.m_BS_FLOWER1									: return MandelbrotMementoFactory.BS_FLOWER1;
+		case R.id.m_BS_FLOWER2									: return MandelbrotMementoFactory.BS_FLOWER2;
+		case R.id.m_BS_FLOWER3									: return MandelbrotMementoFactory.BS_FLOWER3;
+		case R.id.m_BS_FLOWER4									: return MandelbrotMementoFactory.BS_FLOWER4;
+		case R.id.m_BS_MICROSHIP								: return MandelbrotMementoFactory.BS_MICROSHIP;
 
 		// ====================================
 		
 		case R.id.m_PBS_BIG_PICTURE								: return MandelbrotMementoFactory.PBS_BIG_PICTURE;
 		case R.id.m_PBS_FIRST_IFS_TREE_CARDIOUD					: return MandelbrotMementoFactory.PBS_FIRST_IFS_TREE_CARDIOUD;
-		case R.id.m_PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD				: return MandelbrotMementoFactory.PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD;
+		case R.id.m_PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD			: return MandelbrotMementoFactory.PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD;
 		case R.id.m_PBS_COMMON_IFS_TREE_CARDIOUD				: return MandelbrotMementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
 		case R.id.m_PBS_SPIRAL_GALAXY							: return MandelbrotMementoFactory.PBS_SPIRAL_GALAXY;
 		case R.id.m_PBS_HUMANOID_CREATURE_THE_ALIEN				: return MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_ALIEN;
@@ -349,6 +355,13 @@ class MyMenuActions {
 		case R.id.m_PBS_MIRROR									: return MandelbrotMementoFactory.PBS_MIRROR;
 		case R.id.m_PBS_PENDANT									: return MandelbrotMementoFactory.PBS_PENDANT;
 
+		case R.id.m_PBS_SWIRL									: return MandelbrotMementoFactory.PBS_SWIRL;
+		case R.id.m_PBS_MINI_PM									: return MandelbrotMementoFactory.PBS_MINI_PM;
+		case R.id.m_PBS_CARDIOID_PM								: return MandelbrotMementoFactory.PBS_CARDIOID_PM;
+		case R.id.m_PBS_GRID_PM									: return MandelbrotMementoFactory.PBS_GRID_PM;
+		case R.id.m_PBS_MASQUERADE								: return MandelbrotMementoFactory.PBS_MASQUERADE;
+		case R.id.m_PBS_LE_ROI_SOLEIL							: return MandelbrotMementoFactory.PBS_LE_ROI_SOLEIL;
+		
 		// ====================================
 		
 		case R.id.m_PM_BIG_PICTURE								: return MandelbrotMementoFactory.PM_BIG_PICTURE;
@@ -357,6 +370,14 @@ class MyMenuActions {
 		case R.id.m_PM_GROTESQUE								: return MandelbrotMementoFactory.PM_GROTESQUE;
 		case R.id.m_PM_RANDOM_SHAPE								: return MandelbrotMementoFactory.PM_RANDOM_SHAPE;
 		case R.id.m_PM_SKULL_VALLEY								: return MandelbrotMementoFactory.PM_SKULL_VALLEY;
+		
+		case R.id.m_PM_BLOB										: return MandelbrotMementoFactory.PM_BLOB;
+		case R.id.m_PM_CHAINS									: return MandelbrotMementoFactory.PM_CHAINS;
+		case R.id.m_PM_VISAGE_OF_WAR							: return MandelbrotMementoFactory.PM_VISAGE_OF_WAR;
+		case R.id.m_PM_FIRE										: return MandelbrotMementoFactory.PM_FIRE;
+		case R.id.m_PM_CARDIOID									: return MandelbrotMementoFactory.PM_CARDIOID;
+		case R.id.m_PM_SWIRL									: return MandelbrotMementoFactory.PM_SWIRL;
+
 		}
 		
 		return 0;

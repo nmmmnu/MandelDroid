@@ -2,6 +2,11 @@ package nu.nmmm.android.mandelbrot;
 
 
 public class FractalManager {
+	public final static int TYPE_CLASSIC					= 0;
+	public final static int TYPE_BURNINGSHIP				= 1;
+	public final static int TYPE_PERPENDICULAR_BURNINGSHIP	= 2;
+	public final static int TYPE_PERPENDICULAR_MANDELBROT	= 3;
+
 	// must be power of 2
 	// 64 is better for most cases
 	final static int PREVIEW_SQUARE_MAX = 1 << 6;
@@ -43,7 +48,7 @@ public class FractalManager {
 	}
 	
 	public double[] getCenter(){
-		double x[] = { _centerX, _centerY, _screenRes};
+		double x[] = { _centerX, _centerY, _halfWidthX };
 		return x;
 	}
 	
@@ -137,8 +142,6 @@ public class FractalManager {
 		return true;
 	}
 
-	
-	
 	private double _getRes() {
 		if (_screenWidth < PREVIEW_SQUARE_MAX)
 			return 0;

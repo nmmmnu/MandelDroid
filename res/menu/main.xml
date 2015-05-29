@@ -79,6 +79,8 @@
 			<item android:id="@+id/m_MB_TRIPPLE_SPIRAL"								android:title="@string/m_MB_TRIPPLE_SPIRAL"								/>
 			<item android:id="@+id/m_MB_IMPERIAL_ORB_VALLEY"						android:title="@string/m_MB_IMPERIAL_ORB_VALLEY"						/>
 
+			
+			
 			<item android:id="@+id/m_BS_BIG_PICTURE"								android:title="@string/m_BS_BIG_PICTURE"								/>
 			<item android:id="@+id/m_BS_SHIP_IN_ARMADA"								android:title="@string/m_BS_SHIP_IN_ARMADA"								/>
 			<item android:id="@+id/m_BS_MYSTERIOUS_LADY"							android:title="@string/m_BS_MYSTERIOUS_LADY"							/>
@@ -87,6 +89,14 @@
 			<item android:id="@+id/m_BS_HIDDEN_FOREST1"								android:title="@string/m_BS_HIDDEN_FOREST1"								/>
 			<item android:id="@+id/m_BS_HIDDEN_FOREST2"								android:title="@string/m_BS_HIDDEN_FOREST2"								/>
 			<item android:id="@+id/m_BS_OVALS"										android:title="@string/m_BS_OVALS"										/>
+			
+			<item android:id="@+id/m_BS_FLOWER1"									android:title="@string/m_BS_FLOWER1"									/>
+			<item android:id="@+id/m_BS_FLOWER2"									android:title="@string/m_BS_FLOWER2"									/>
+			<item android:id="@+id/m_BS_FLOWER3"									android:title="@string/m_BS_FLOWER3"									/>
+			<item android:id="@+id/m_BS_FLOWER4"									android:title="@string/m_BS_FLOWER4"									/>
+			<item android:id="@+id/m_BS_MICROSHIP"									android:title="@string/m_BS_MICROSHIP"									/>
+			
+			
 			
 			<item android:id="@+id/m_PBS_BIG_PICTURE"								android:title="@string/m_PBS_BIG_PICTURE"								/>
 			<item android:id="@+id/m_PBS_MICRO_PBS"									android:title="@string/m_PBS_MICRO_PBS"									/>
@@ -109,13 +119,30 @@
 			<item android:id="@+id/m_PBS_ARMADA"									android:title="@string/m_PBS_ARMADA"									/>
 			<item android:id="@+id/m_PBS_MIRROR"									android:title="@string/m_PBS_MIRROR"									/>
 			<item android:id="@+id/m_PBS_PENDANT"									android:title="@string/m_PBS_PENDANT"									/>
-
+			
+			<item android:id="@+id/m_PBS_SWIRL"										android:title="@string/m_PBS_SWIRL"										/>
+			<item android:id="@+id/m_PBS_MINI_PM"									android:title="@string/m_PBS_MINI_PM"									/>
+			<item android:id="@+id/m_PBS_CARDIOID_PM"								android:title="@string/m_PBS_CARDIOID_PM"								/>
+			<item android:id="@+id/m_PBS_GRID_PM"									android:title="@string/m_PBS_GRID_PM"									/>
+			<item android:id="@+id/m_PBS_MASQUERADE"								android:title="@string/m_PBS_MASQUERADE"								/>
+			<item android:id="@+id/m_PBS_LE_ROI_SOLEIL"								android:title="@string/m_PBS_LE_ROI_SOLEIL"								/>
+			
+			
+			
 			<item android:id="@+id/m_PM_BIG_PICTURE"								android:title="@string/m_PM_BIG_PICTURE"								/>
 			<item android:id="@+id/m_PM_DRAKULA"									android:title="@string/m_PM_DRAKULA"									/>
 			<item android:id="@+id/m_PM_SQUID"										android:title="@string/m_PM_SQUID"										/>
 			<item android:id="@+id/m_PM_GROTESQUE"									android:title="@string/m_PM_GROTESQUE"									/>
 			<item android:id="@+id/m_PM_RANDOM_SHAPE"								android:title="@string/m_PM_RANDOM_SHAPE"								/>
 			<item android:id="@+id/m_PM_SKULL_VALLEY"								android:title="@string/m_PM_SKULL_VALLEY"								/>
+
+			<item android:id="@+id/m_PM_BLOB"										android:title="@string/m_PM_BLOB"										/>
+			<item android:id="@+id/m_PM_CHAINS"										android:title="@string/m_PM_CHAINS"										/>
+			<item android:id="@+id/m_PM_VISAGE_OF_WAR"								android:title="@string/m_PM_VISAGE_OF_WAR"								/>
+			<item android:id="@+id/m_PM_FIRE"										android:title="@string/m_PM_FIRE"										/>
+			<item android:id="@+id/m_PM_CARDIOID"									android:title="@string/m_PM_CARDIOID"									/>
+			<item android:id="@+id/m_PM_SWIRL"										android:title="@string/m_PM_SWIRL"										/>
+
 		</menu>
 	</item>
 

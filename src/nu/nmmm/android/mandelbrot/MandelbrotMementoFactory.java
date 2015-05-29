@@ -22,6 +22,12 @@ public class MandelbrotMementoFactory {
 	public final static int BS_OVALS							= 207;
 	
 	public final static int BS_HIDDEN_FOREST2					= 208;
+
+	public final static int BS_FLOWER1							= 209;
+	public final static int BS_FLOWER2							= 210;
+	public final static int BS_FLOWER3							= 211;
+	public final static int BS_FLOWER4							= 212;
+	public final static int BS_MICROSHIP						= 213;
 	
 
 	
@@ -47,6 +53,13 @@ public class MandelbrotMementoFactory {
 	public final static int PBS_MIRROR							= 319;
 	public final static int PBS_PENDANT							= 320;
 	
+	public final static int PBS_SWIRL							= 321;
+	public final static int PBS_MINI_PM							= 322;
+	public final static int PBS_CARDIOID_PM						= 323;
+	public final static int PBS_GRID_PM							= 324;
+	public final static int PBS_MASQUERADE						= 325;
+	public final static int PBS_LE_ROI_SOLEIL					= 326;
+
 
 	
 	public final static int PM_BIG_PICTURE						= 401;
@@ -56,12 +69,19 @@ public class MandelbrotMementoFactory {
 	public final static int PM_RANDOM_SHAPE						= 405;
 	public final static int PM_SKULL_VALLEY						= 406;
 
+	public final static int PM_BLOB								= 407;
+	public final static int PM_CHAINS							= 408;
+	public final static int PM_VISAGE_OF_WAR					= 409;
+	public final static int PM_FIRE								= 410;
+	public final static int PM_CARDIOID							= 411;
+	public final static int PM_SWIRL							= 412;
+
 	// ====================================
 	
-	private final static int T_MB	=	FractalCalculatorMandelbrot.TYPE_CLASSIC;
-	private final static int T_BS	=	FractalCalculatorMandelbrot.TYPE_BURNINGSHIP;
-	private final static int T_PBS	=	FractalCalculatorMandelbrot.TYPE_PERPENDICULAR_BURNINGSHIP;
-	private final static int T_PM	=	FractalCalculatorMandelbrot.TYPE_PERPENDICULAR_MANDELBROT;
+	private final static int T_MB	=	FractalCalculator.TYPE_CLASSIC;
+	private final static int T_BS	=	FractalCalculator.TYPE_BURNINGSHIP;
+	private final static int T_PBS	=	FractalCalculator.TYPE_PERPENDICULAR_BURNINGSHIP;
+	private final static int T_PM	=	FractalCalculator.TYPE_PERPENDICULAR_MANDELBROT;
 
 	private final static int IT_LO	=	64;
 	private final static int IT_ST	=	256;
@@ -93,6 +113,12 @@ public class MandelbrotMementoFactory {
 
 		case BS_HIDDEN_FOREST2					: return _m(T_BS,	IT_MD,	-1.939935,		-0.00124,		0.000006	);
 
+		case BS_FLOWER1							: return _m(T_BS,	IT_MD,	-1.7397,		0,				0.0005		);
+		case BS_FLOWER2							: return _m(T_BS,	IT_MD,	-1.749319,		0.0000593,		0.000002	);
+		case BS_FLOWER3							: return _m(T_BS,	IT_MD,	-1.748764,		0.0000057,		0.00001		);
+		case BS_FLOWER4							: return _m(T_BS,	IT_MD,	-1.7433355,		0.000038,		0.00001		);
+		case BS_MICROSHIP						: return _m(T_BS,	IT_MD,	-1.4730195,		0.000006,		0.0000008	);
+
 		// ====================================
 
 		case PBS_BIG_PICTURE					: return _m(T_PBS,	IT_ST,	-0.5,			-0.5,			1.8			);
@@ -117,14 +143,28 @@ public class MandelbrotMementoFactory {
 		case PBS_MIRROR							: return _m(T_PBS,	IT_MD,	-1.758406,		-0.006294,		0.000004	);
 		case PBS_PENDANT						: return _m(T_PBS,	IT_MD,	-1.62617405,	-0.00123832,	0.000001	);
 
+		case PBS_SWIRL							: return _m(T_PBS,	IT_MD,	0.231664,		0.534623,		0.0003		);
+		case PBS_MINI_PM						: return _m(T_PBS,	IT_MD,	-1.7357397,		-0.0001173,		0.000005	);
+		case PBS_CARDIOID_PM					: return _m(T_PBS,	IT_MD,	-1.735739470,	-0.000117546,	0.00000001	);
+		case PBS_GRID_PM						: return _m(T_PBS,	IT_MD,	-1.721900635,	-0.00042253,	0.00000002	);
+		case PBS_MASQUERADE						: return _m(T_PBS,	IT_MD,	0.35635,		0.34722,		0.00005		);
+		case PBS_LE_ROI_SOLEIL					: return _m(T_PBS,	IT_MD,	0.122117,		0.592448,		0.0001		);
+
 		// ====================================
 
-		case PM_BIG_PICTURE						: return _m(T_PM,	IT_MD,	-0.5,			+0.0,			1.8			);
-		case PM_DRAKULA							: return _m(T_PM,	IT_MD,	-0.456126,		+0.784448,		0.0004		);
-		case PM_SQUID							: return _m(T_PM,	IT_MD,	-0.798464,		+0.178716,		0.0015		);
-		case PM_GROTESQUE						: return _m(T_PM,	IT_MD,	-0.760193,		+0.084931,		0.0003		);
-		case PM_RANDOM_SHAPE					: return _m(T_PM,	IT_MD,	-0.348205,		-0.860702,		0.0005		);
-		case PM_SKULL_VALLEY					: return _m(T_PM,	IT_MD,	+0.706316,		+0.851956,		0.0001		);
+		case PM_BIG_PICTURE						: return _m(T_PM,	IT_MD,	-0.5,			+0.0,			1.8				);
+		case PM_DRAKULA							: return _m(T_PM,	IT_MD,	-0.456126,		+0.784448,		0.0004			);
+		case PM_SQUID							: return _m(T_PM,	IT_MD,	-0.798464,		+0.178716,		0.0015			);
+		case PM_GROTESQUE						: return _m(T_PM,	IT_MD,	-0.760193,		+0.084931,		0.0003			);
+		case PM_RANDOM_SHAPE					: return _m(T_PM,	IT_MD,	-0.348205,		-0.860702,		0.0005			);
+		case PM_SKULL_VALLEY					: return _m(T_PM,	IT_MD,	+0.706316,		+0.851956,		0.0001			);
+
+		case PM_BLOB							: return _m(T_PM,	IT_MD,	-0.748880,		0.122827,		0.0003			);
+		case PM_CHAINS							: return _m(T_PM,	IT_ST,	 0.655084,		0.913451,		0.000005		);
+		case PM_VISAGE_OF_WAR					: return _m(T_PM,	IT_MD,	-1.78508988223,	0.00003814529,	0.00000000005	);
+		case PM_FIRE							: return _m(T_PM,	IT_MD,	-1.762839,		-0.012836,		0.00001			);
+		case PM_CARDIOID						: return _m(T_PM,	IT_MD,	-1.7628397869,	-0.0128296552,	0.0000000005	);
+		case PM_SWIRL							: return _m(T_PM,	IT_MD,	-0.46006,		0.77812,		0.00005			);
 
 		// ====================================
 
