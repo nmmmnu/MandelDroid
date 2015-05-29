@@ -26,7 +26,6 @@ public class RGB {
 	public void setColor(int r, int g, int b, int max){
 		if (max == 0){
 			setColorZero();
-			
 			return;
 		}
 
