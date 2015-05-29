@@ -1,15 +1,23 @@
 package nu.nmmm.android.mandelbrot.color;
 
 class FColorCosmos implements FColor{
-	protected int _transIt(int color, int maxcolor){
-		return RGB.MAX_COLOR;
+	private boolean _neo;
+	
+	public FColorCosmos(boolean neo){
+		this._neo = neo;
 	}
 	
 	@Override
 	public RGB convertColor(int color, int maxcolor, RGB rgb) {
-		int a = (color & 1) != 0 ? _transIt(color, maxcolor) : 0;
-
-		rgb.setColor(a);
+		if ((color & 1) == 0){
+			rgb.setColorZero();
+		
+			return rgb;
+		}
+		
+		int c = _neo ? maxcolor - color : maxcolor;
+			
+		rgb.setColor(c, maxcolor);
 		
 		return rgb;
 	}

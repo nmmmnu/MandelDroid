@@ -37,9 +37,9 @@ public class FColorPaletteCyclic implements FColor{
 	
 	private RGB[] _getPaletteFire(){
 		RGB[] colors = {
-				new RGB(0xff, 0xff, 0x00),		// yellow
-				new RGB(0xff, 0x00, 0x00),		// red
-				new RGB(0xff, 0xff, 0x00)		// yellow
+				new RGB(1, 1, 0, 1),		// yellow
+				new RGB(1, 0, 0, 1),		// red
+				new RGB(1, 1, 0, 1),		// yellow
 		};
 		
 		return colors;
@@ -47,9 +47,9 @@ public class FColorPaletteCyclic implements FColor{
 	
 	private RGB[] _getPaletteIce(){
 		RGB[] colors = {
-				new RGB(0xff, 0xff, 0xff),		// white
-				new RGB(0x00, 0x00, 0xff),		// blue
-				new RGB(0xff, 0xff, 0xff)		// white
+				new RGB(1, 1, 1, 1),		// white
+				new RGB(0, 0, 1, 1),		// blue
+				new RGB(1, 1, 1, 1),		// white
 		};
 
 		return colors;
@@ -57,9 +57,9 @@ public class FColorPaletteCyclic implements FColor{
 
 	private RGB[] _getPaletteTurqise(){
 		RGB[] colors = {
-				new RGB(0x77, 0xff, 0x77),		// greenish
-				new RGB(0x00, 0x00, 0xff),		// cyan
-				new RGB(0x77, 0xff, 0x77)		// greenish
+				new RGB(1, 2, 1, 2),		// greenish
+				new RGB(0, 0, 2, 2),		// cyan
+				new RGB(1, 2, 1, 2),		// greenish
 		};
 
 		return colors;
@@ -68,14 +68,14 @@ public class FColorPaletteCyclic implements FColor{
 	@Override
 	public RGB convertColor(int color, int maxcolor, RGB rgb) {
 		if (color == maxcolor){
-			rgb.setColor(0);
+			rgb.setColorZero();
 			
 			return rgb;
 		}
 
 		int location = color % _paletteCount;
 		RGB a = _list.get(location);
-		rgb.setColor(a);
+		rgb.setColorFromRGB(a);
 
 		return rgb;
 	}

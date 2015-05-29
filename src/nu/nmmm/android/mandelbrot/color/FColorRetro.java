@@ -2,20 +2,31 @@ package nu.nmmm.android.mandelbrot.color;
 
 
 public class FColorRetro implements FColor{
-	final private static int MAXCOLOR = 8;
+	final private static int MAXCOLOR = 8 - 1;
 	
 	@Override
 	public RGB convertColor(int color, int maxcolor, RGB rgb) {
-		int a = color == maxcolor ? 0 : (color % (MAXCOLOR - 1)) + 1;
-
-		int ch = (int) (RGB.MAX_COLOR - color / (double) maxcolor * RGB.MAX_COLOR);
+		if (color == maxcolor){
+			rgb.setColorZero();
+			return rgb;
+		}
+		
+		int a = (color % MAXCOLOR) + 1;
+		
+		int c = maxcolor - color;
 		
 		rgb.setColor(
-				(a & 0x01) > 0 ? ch : 0, 
-				(a & 0x02) > 0 ? ch : 0, 
-				(a & 0x04) > 0 ? ch : 0
+				_bit(a, 0x01, c), 
+				_bit(a, 0x02, c), 
+				_bit(a, 0x04, c), 
+					
+				maxcolor
 		);
 
 		return rgb;
+	}
+	
+	private int _bit(int a, int b, int one){
+		return (a & b) > 0 ? one : 0;
 	}
 }

@@ -4,7 +4,6 @@ package nu.nmmm.android.mandelbrot.color;
 public class FColorFactory {
 	public final static int COLOR_STANDARD		= 0;
 	public final static int COLOR_COSMOS		= 1;
-	public final static int COLOR_COSMOS_OLD	= 1001;
 	public final static int COLOR_REVERSE		= 2;
 	public final static int COLOR_CYCLIC		= 3;
 	public final static int COLOR_RETRO			= 4;
@@ -16,8 +15,7 @@ public class FColorFactory {
 	public static FColor getInstance(int type){
 		switch(type){
 		case COLOR_STANDARD:	return new FColorStandard();
-		case COLOR_COSMOS:		return new FColorCosmosNew();
-		case COLOR_COSMOS_OLD:	return new FColorCosmos();
+		case COLOR_COSMOS:		return new FColorCosmos(true);
 		case COLOR_REVERSE:		return new FColorReverse();
 		case COLOR_CYCLIC:		return new FColorCyclic();
 		case COLOR_RETRO:		return new FColorRetro();
