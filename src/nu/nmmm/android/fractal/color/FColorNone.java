@@ -1,4 +1,4 @@
-package nu.nmmm.android.mandelbrot.color;
+package nu.nmmm.android.fractal.color;
 
 
 
@@ -7,8 +7,6 @@ class FColorNone implements FColor{
 	public RGB convertColor(int color, int maxcolor, RGB rgb) {
 		int a = color == maxcolor ? 0 : maxcolor;
 
-		rgb.setColor(a, maxcolor);
-
-		return rgb;
+		return rgb.setColor(a, maxcolor);
 	}
 }

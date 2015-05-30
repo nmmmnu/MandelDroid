@@ -1,4 +1,4 @@
-package nu.nmmm.android.mandelbrot;
+package nu.nmmm.android.fractal;
 
 public class Memento {
 	public int type;

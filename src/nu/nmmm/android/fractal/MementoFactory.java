@@ -1,6 +1,8 @@
-package nu.nmmm.android.mandelbrot;
+package nu.nmmm.android.fractal;
 
-public class MandelbrotMementoFactory {
+import nu.nmmm.android.fractal.calculator.FCalculatorFactory;
+
+public class MementoFactory {
 	public final static int MB_BIG_PICTURE						= 101;
 	public final static int MB_BULB_MANDELBROT					= 102;
 	public final static int MB_ELEPHANT_VALLEY					= 103;
@@ -78,10 +80,10 @@ public class MandelbrotMementoFactory {
 
 	// ====================================
 	
-	private final static int T_MB	=	FractalCalculatorFactory.TYPE_MANDELBROT;
-	private final static int T_BS	=	FractalCalculatorFactory.TYPE_BURNINGSHIP;
-	private final static int T_PBS	=	FractalCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP;
-	private final static int T_PM	=	FractalCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT;
+	private final static int T_MB	=	FCalculatorFactory.TYPE_MANDELBROT;
+	private final static int T_BS	=	FCalculatorFactory.TYPE_BURNINGSHIP;
+	private final static int T_PBS	=	FCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP;
+	private final static int T_PM	=	FCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT;
 
 	private final static int IT_LO	=	64;
 	private final static int IT_ST	=	256;

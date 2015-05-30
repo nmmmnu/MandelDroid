@@ -7,12 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
-import nu.nmmm.android.mandelbrot.*;
-import nu.nmmm.android.mandelbrot.color.FColor;
-import nu.nmmm.android.mandelbrot.color.FColorFactory;
-import nu.nmmm.android.mandelbrot.color.RGB;
+import nu.nmmm.android.fractal.*;
+import nu.nmmm.android.fractal.color.FColor;
+import nu.nmmm.android.fractal.color.FColorFactory;
+import nu.nmmm.android.fractal.color.RGB;
 
-class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDetectorConsumer {
+class MDView extends View implements Runnable, FManagerPlot, MyGestureDetectorConsumer {
 	@SuppressWarnings("unused")
 	final private static String TAG = "MDView";
 	
@@ -27,7 +27,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 
 	private MyGestureDetector _mgd;
 	
-	FractalManager _fractalManager;
+	FManager _fractalManager;
 	private FColor _fractalColor;
 
 	private Bitmap _image;
@@ -65,7 +65,7 @@ class MDView extends View implements Runnable, FractalManagerPlot, MyGestureDete
 	    
     	this.setFractalColor(fractalColor);
 
-		this._fractalManager = new FractalManager(fractalType, _width, _height);
+		this._fractalManager = new FManager(fractalType, _width, _height);
 	}
 	
 	public void setPixelDebugPreview(boolean pixelDebugPreview){

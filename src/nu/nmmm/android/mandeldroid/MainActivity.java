@@ -1,7 +1,7 @@
 package nu.nmmm.android.mandeldroid;
 
-import nu.nmmm.android.mandelbrot.FractalCalculatorFactory;
-import nu.nmmm.android.mandelbrot.color.FColorFactory;
+import nu.nmmm.android.fractal.calculator.FCalculatorFactory;
+import nu.nmmm.android.fractal.color.FColorFactory;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
-	final private static int FRACTAL_TYPE   = FractalCalculatorFactory.TYPE_MANDELBROT;
+	final private static int FRACTAL_TYPE   = FCalculatorFactory.TYPE_MANDELBROT;
 	final private static int FRACTAL_COLORS = FColorFactory.COLOR_STANDARD;
 
 	private MDView _surface;

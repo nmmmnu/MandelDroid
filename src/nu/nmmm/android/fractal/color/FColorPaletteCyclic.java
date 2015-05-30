@@ -1,4 +1,4 @@
-package nu.nmmm.android.mandelbrot.color;
+package nu.nmmm.android.fractal.color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,25 +7,25 @@ public class FColorPaletteCyclic implements FColor{
 	final public static int COLOR_FIRE = 0;
 	final public static int COLOR_ICE = 1;
 	final public static int COLOR_TURQUOISE = 2;
-	
+
 	final private static int PALETTE_COUNT = 64;
-	
+
 	private List <RGB>_list = new ArrayList<RGB>();
 	private int _paletteCount;
-	
+
 	public FColorPaletteCyclic(int type){
 		_setPalette(type);
 	}
 
 	private void _setPalette(int type){
 		RGB[] colors = _getPalette(type);
-		
+
 		FPalette pal = new FPalette(colors, PALETTE_COUNT);
 		pal.calc(this._list);
-		
+
 		_paletteCount = _list.size();
 	}
-	
+
 	private  RGB[] _getPalette(int type){
 		switch(type){
 		case COLOR_ICE:			return _getPaletteIce();
@@ -34,17 +34,17 @@ public class FColorPaletteCyclic implements FColor{
 		default:				return _getPaletteFire();
 		}
 	}
-	
+
 	private RGB[] _getPaletteFire(){
 		RGB[] colors = {
 				new RGB(1, 1, 0, 1),		// yellow
 				new RGB(1, 0, 0, 1),		// red
 				new RGB(1, 1, 0, 1),		// yellow
 		};
-		
+
 		return colors;
 	}
-	
+
 	private RGB[] _getPaletteIce(){
 		RGB[] colors = {
 				new RGB(1, 1, 1, 1),		// white
@@ -67,16 +67,12 @@ public class FColorPaletteCyclic implements FColor{
 
 	@Override
 	public RGB convertColor(int color, int maxcolor, RGB rgb) {
-		if (color == maxcolor){
-			rgb.setColorZero();
-			
-			return rgb;
-		}
+		// bounded color
+		if (color == maxcolor)
+			return rgb.setColorZero();
 
 		int location = color % _paletteCount;
 		RGB a = _list.get(location);
-		rgb.setColorFromRGB(a);
-
-		return rgb;
+		return rgb.setColorFromRGB(a);
 	}
 }

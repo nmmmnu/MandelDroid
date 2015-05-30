@@ -13,8 +13,9 @@ import android.widget.Toast;
 
 import java.io.*;
 
-import nu.nmmm.android.mandelbrot.*;
-import nu.nmmm.android.mandelbrot.color.FColorFactory;
+import nu.nmmm.android.fractal.*;
+import nu.nmmm.android.fractal.calculator.FCalculatorFactory;
+import nu.nmmm.android.fractal.color.FColorFactory;
 
 class MyMenuActions {
 	final private static String FILE_PREFIX = "mandeldroid.";
@@ -73,7 +74,7 @@ class MyMenuActions {
 	}
 
 	private void _setMemento(int tid){
-		Memento m = MandelbrotMementoFactory.getInstance(tid);
+		Memento m = MementoFactory.getInstance(tid);
 		_surface.setFractalMemento(m);
 		_refresh();
 	}
@@ -143,12 +144,12 @@ class MyMenuActions {
 		_setIterations(maxIterations);
 		
 		switch(fractalType){
-		case 0:		_setFractalType(FractalCalculatorFactory.TYPE_MANDELBROT);					break;
-		case 1:		_setFractalType(FractalCalculatorFactory.TYPE_BURNINGSHIP);					break;
-		case 2:		_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP);	break;
-		case 3:		_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT);	break;
+		case 0:		_setFractalType(FCalculatorFactory.TYPE_MANDELBROT);					break;
+		case 1:		_setFractalType(FCalculatorFactory.TYPE_BURNINGSHIP);					break;
+		case 2:		_setFractalType(FCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP);	break;
+		case 3:		_setFractalType(FCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT);	break;
 		
-		default:	_setFractalType(FractalCalculatorFactory.TYPE_MANDELBROT);
+		default:	_setFractalType(FCalculatorFactory.TYPE_MANDELBROT);
 		}
 		
 		switch(fractalColor){		
@@ -180,19 +181,19 @@ class MyMenuActions {
 		// check type
 		
 		case R.id.m_fractal_type_mandelbrot:
-			_setFractalType(FractalCalculatorFactory.TYPE_MANDELBROT);
+			_setFractalType(FCalculatorFactory.TYPE_MANDELBROT);
 			return true;
 			
 		case R.id.m_fractal_type_bs:
-			_setFractalType(FractalCalculatorFactory.TYPE_BURNINGSHIP);
+			_setFractalType(FCalculatorFactory.TYPE_BURNINGSHIP);
 			return true;
 
 		case R.id.m_fractal_type_pbs:
-			_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP);
+			_setFractalType(FCalculatorFactory.TYPE_PERPENDICULAR_BURNINGSHIP);
 			return true;
 		
 		case R.id.m_fractal_type_pm:
-			_setFractalType(FractalCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT);
+			_setFractalType(FCalculatorFactory.TYPE_PERPENDICULAR_MANDELBROT);
 			return true;
 		
 		// check colors
@@ -303,80 +304,80 @@ class MyMenuActions {
 
 	private int _getTouristicPlaceID(int id){
 		switch(id){
-		case R.id.m_MB_BIG_PICTURE								: return MandelbrotMementoFactory.MB_BIG_PICTURE;
-		case R.id.m_MB_BULB_MANDELBROT							: return MandelbrotMementoFactory.MB_BULB_MANDELBROT;
-		case R.id.m_MB_ELEPHANT_VALLEY							: return MandelbrotMementoFactory.MB_ELEPHANT_VALLEY;
-		case R.id.m_MB_SEAHORSE_VALLEY							: return MandelbrotMementoFactory.MB_SEAHORSE_VALLEY;
-		case R.id.m_MB_TRIPPLE_SPIRAL							: return MandelbrotMementoFactory.MB_TRIPPLE_SPIRAL;
-		case R.id.m_MB_IMPERIAL_ORB_VALLEY						: return MandelbrotMementoFactory.MB_IMPERIAL_ORB_VALLEY;
+		case R.id.m_MB_BIG_PICTURE								: return MementoFactory.MB_BIG_PICTURE;
+		case R.id.m_MB_BULB_MANDELBROT							: return MementoFactory.MB_BULB_MANDELBROT;
+		case R.id.m_MB_ELEPHANT_VALLEY							: return MementoFactory.MB_ELEPHANT_VALLEY;
+		case R.id.m_MB_SEAHORSE_VALLEY							: return MementoFactory.MB_SEAHORSE_VALLEY;
+		case R.id.m_MB_TRIPPLE_SPIRAL							: return MementoFactory.MB_TRIPPLE_SPIRAL;
+		case R.id.m_MB_IMPERIAL_ORB_VALLEY						: return MementoFactory.MB_IMPERIAL_ORB_VALLEY;
 		
-		case R.id.m_MB_MICRO_MANDELBROT							: return MandelbrotMementoFactory.MB_MICRO_MANDELBROT;
-		case R.id.m_MB_MICRO_MANDELBROT_WITH_ANTENNA			: return MandelbrotMementoFactory.MB_MICRO_MANDELBROT_WITH_ANTENNA;
+		case R.id.m_MB_MICRO_MANDELBROT							: return MementoFactory.MB_MICRO_MANDELBROT;
+		case R.id.m_MB_MICRO_MANDELBROT_WITH_ANTENNA			: return MementoFactory.MB_MICRO_MANDELBROT_WITH_ANTENNA;
 
 		// ====================================
 			
-		case R.id.m_BS_BIG_PICTURE								: return MandelbrotMementoFactory.BS_BIG_PICTURE;
-		case R.id.m_BS_SHIP_IN_ARMADA							: return MandelbrotMementoFactory.BS_SHIP_IN_ARMADA;
-		case R.id.m_BS_MYSTERIOUS_LADY							: return MandelbrotMementoFactory.BS_MYSTERIOUS_LADY;
-		case R.id.m_BS_HIDDEN_TREASURE1							: return MandelbrotMementoFactory.BS_HIDDEN_TREASURE1;
-		case R.id.m_BS_HIDDEN_FOREST1							: return MandelbrotMementoFactory.BS_HIDDEN_FOREST1;
-		case R.id.m_BS_HIDDEN_TREASURE2							: return MandelbrotMementoFactory.BS_HIDDEN_TREASURE2;
-		case R.id.m_BS_OVALS									: return MandelbrotMementoFactory.BS_OVALS;
+		case R.id.m_BS_BIG_PICTURE								: return MementoFactory.BS_BIG_PICTURE;
+		case R.id.m_BS_SHIP_IN_ARMADA							: return MementoFactory.BS_SHIP_IN_ARMADA;
+		case R.id.m_BS_MYSTERIOUS_LADY							: return MementoFactory.BS_MYSTERIOUS_LADY;
+		case R.id.m_BS_HIDDEN_TREASURE1							: return MementoFactory.BS_HIDDEN_TREASURE1;
+		case R.id.m_BS_HIDDEN_FOREST1							: return MementoFactory.BS_HIDDEN_FOREST1;
+		case R.id.m_BS_HIDDEN_TREASURE2							: return MementoFactory.BS_HIDDEN_TREASURE2;
+		case R.id.m_BS_OVALS									: return MementoFactory.BS_OVALS;
 		
-		case R.id.m_BS_HIDDEN_FOREST2							: return MandelbrotMementoFactory.BS_HIDDEN_FOREST2;
+		case R.id.m_BS_HIDDEN_FOREST2							: return MementoFactory.BS_HIDDEN_FOREST2;
 		
-		case R.id.m_BS_FLOWER1									: return MandelbrotMementoFactory.BS_FLOWER1;
-		case R.id.m_BS_FLOWER2									: return MandelbrotMementoFactory.BS_FLOWER2;
-		case R.id.m_BS_FLOWER3									: return MandelbrotMementoFactory.BS_FLOWER3;
-		case R.id.m_BS_FLOWER4									: return MandelbrotMementoFactory.BS_FLOWER4;
-		case R.id.m_BS_MICROSHIP								: return MandelbrotMementoFactory.BS_MICROSHIP;
+		case R.id.m_BS_FLOWER1									: return MementoFactory.BS_FLOWER1;
+		case R.id.m_BS_FLOWER2									: return MementoFactory.BS_FLOWER2;
+		case R.id.m_BS_FLOWER3									: return MementoFactory.BS_FLOWER3;
+		case R.id.m_BS_FLOWER4									: return MementoFactory.BS_FLOWER4;
+		case R.id.m_BS_MICROSHIP								: return MementoFactory.BS_MICROSHIP;
 
 		// ====================================
 		
-		case R.id.m_PBS_BIG_PICTURE								: return MandelbrotMementoFactory.PBS_BIG_PICTURE;
-		case R.id.m_PBS_FIRST_IFS_TREE_CARDIOUD					: return MandelbrotMementoFactory.PBS_FIRST_IFS_TREE_CARDIOUD;
-		case R.id.m_PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD			: return MandelbrotMementoFactory.PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD;
-		case R.id.m_PBS_COMMON_IFS_TREE_CARDIOUD				: return MandelbrotMementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
-		case R.id.m_PBS_SPIRAL_GALAXY							: return MandelbrotMementoFactory.PBS_SPIRAL_GALAXY;
-		case R.id.m_PBS_HUMANOID_CREATURE_THE_ALIEN				: return MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_ALIEN;
-		case R.id.m_PBS_HUMANOID_CREATURE_THE_MINOTAUR			: return MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_MINOTAUR;
-		case R.id.m_PBS_HUMANOID_CREATURE_THE_SKULL				: return MandelbrotMementoFactory.PBS_HUMANOID_CREATURE_THE_SKULL;
-		case R.id.m_PBS_BUTTERFLIES_BIG_PICTURE					: return MandelbrotMementoFactory.PBS_BUTTERFLIES_BIG_PICTURE;
-		case R.id.m_PBS_BUTTERFLY								: return MandelbrotMementoFactory.PBS_BUTTERFLY;
-		case R.id.m_PBS_APOLONIAN_GASKET						: return MandelbrotMementoFactory.PBS_APOLONIAN_GASKET;
-		case R.id.m_PBS_SIERPINSKI								: return MandelbrotMementoFactory.PBS_SIERPINSKI;
-		case R.id.m_PBS_IFS_SQUARE								: return MandelbrotMementoFactory.PBS_IFS_SQUARE;
-		case R.id.m_PBS_BAOBAB									: return MandelbrotMementoFactory.PBS_BAOBAB;
+		case R.id.m_PBS_BIG_PICTURE								: return MementoFactory.PBS_BIG_PICTURE;
+		case R.id.m_PBS_FIRST_IFS_TREE_CARDIOUD					: return MementoFactory.PBS_FIRST_IFS_TREE_CARDIOUD;
+		case R.id.m_PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD			: return MementoFactory.PBS_RHOMBUS_INSIDE_FIRST_CARDIOUD;
+		case R.id.m_PBS_COMMON_IFS_TREE_CARDIOUD				: return MementoFactory.PBS_COMMON_IFS_TREE_CARDIOUD;
+		case R.id.m_PBS_SPIRAL_GALAXY							: return MementoFactory.PBS_SPIRAL_GALAXY;
+		case R.id.m_PBS_HUMANOID_CREATURE_THE_ALIEN				: return MementoFactory.PBS_HUMANOID_CREATURE_THE_ALIEN;
+		case R.id.m_PBS_HUMANOID_CREATURE_THE_MINOTAUR			: return MementoFactory.PBS_HUMANOID_CREATURE_THE_MINOTAUR;
+		case R.id.m_PBS_HUMANOID_CREATURE_THE_SKULL				: return MementoFactory.PBS_HUMANOID_CREATURE_THE_SKULL;
+		case R.id.m_PBS_BUTTERFLIES_BIG_PICTURE					: return MementoFactory.PBS_BUTTERFLIES_BIG_PICTURE;
+		case R.id.m_PBS_BUTTERFLY								: return MementoFactory.PBS_BUTTERFLY;
+		case R.id.m_PBS_APOLONIAN_GASKET						: return MementoFactory.PBS_APOLONIAN_GASKET;
+		case R.id.m_PBS_SIERPINSKI								: return MementoFactory.PBS_SIERPINSKI;
+		case R.id.m_PBS_IFS_SQUARE								: return MementoFactory.PBS_IFS_SQUARE;
+		case R.id.m_PBS_BAOBAB									: return MementoFactory.PBS_BAOBAB;
 
-		case R.id.m_PBS_MICRO_PBS								: return MandelbrotMementoFactory.PBS_MICRO_PBS;
-		case R.id.m_PBS_HIDDEN_FLAMES							: return MandelbrotMementoFactory.PBS_HIDDEN_FLAMES;
-		case R.id.m_PBS_GATE									: return MandelbrotMementoFactory.PBS_GATE;
-		case R.id.m_PBS_ARMADA									: return MandelbrotMementoFactory.PBS_ARMADA;
-		case R.id.m_PBS_MIRROR									: return MandelbrotMementoFactory.PBS_MIRROR;
-		case R.id.m_PBS_PENDANT									: return MandelbrotMementoFactory.PBS_PENDANT;
+		case R.id.m_PBS_MICRO_PBS								: return MementoFactory.PBS_MICRO_PBS;
+		case R.id.m_PBS_HIDDEN_FLAMES							: return MementoFactory.PBS_HIDDEN_FLAMES;
+		case R.id.m_PBS_GATE									: return MementoFactory.PBS_GATE;
+		case R.id.m_PBS_ARMADA									: return MementoFactory.PBS_ARMADA;
+		case R.id.m_PBS_MIRROR									: return MementoFactory.PBS_MIRROR;
+		case R.id.m_PBS_PENDANT									: return MementoFactory.PBS_PENDANT;
 
-		case R.id.m_PBS_SWIRL									: return MandelbrotMementoFactory.PBS_SWIRL;
-		case R.id.m_PBS_MINI_PM									: return MandelbrotMementoFactory.PBS_MINI_PM;
-		case R.id.m_PBS_CARDIOID_PM								: return MandelbrotMementoFactory.PBS_CARDIOID_PM;
-		case R.id.m_PBS_GRID_PM									: return MandelbrotMementoFactory.PBS_GRID_PM;
-		case R.id.m_PBS_MASQUERADE								: return MandelbrotMementoFactory.PBS_MASQUERADE;
-		case R.id.m_PBS_LE_ROI_SOLEIL							: return MandelbrotMementoFactory.PBS_LE_ROI_SOLEIL;
+		case R.id.m_PBS_SWIRL									: return MementoFactory.PBS_SWIRL;
+		case R.id.m_PBS_MINI_PM									: return MementoFactory.PBS_MINI_PM;
+		case R.id.m_PBS_CARDIOID_PM								: return MementoFactory.PBS_CARDIOID_PM;
+		case R.id.m_PBS_GRID_PM									: return MementoFactory.PBS_GRID_PM;
+		case R.id.m_PBS_MASQUERADE								: return MementoFactory.PBS_MASQUERADE;
+		case R.id.m_PBS_LE_ROI_SOLEIL							: return MementoFactory.PBS_LE_ROI_SOLEIL;
 		
 		// ====================================
 		
-		case R.id.m_PM_BIG_PICTURE								: return MandelbrotMementoFactory.PM_BIG_PICTURE;
-		case R.id.m_PM_DRAKULA									: return MandelbrotMementoFactory.PM_DRAKULA;
-		case R.id.m_PM_SQUID									: return MandelbrotMementoFactory.PM_SQUID;
-		case R.id.m_PM_GROTESQUE								: return MandelbrotMementoFactory.PM_GROTESQUE;
-		case R.id.m_PM_RANDOM_SHAPE								: return MandelbrotMementoFactory.PM_RANDOM_SHAPE;
-		case R.id.m_PM_SKULL_VALLEY								: return MandelbrotMementoFactory.PM_SKULL_VALLEY;
+		case R.id.m_PM_BIG_PICTURE								: return MementoFactory.PM_BIG_PICTURE;
+		case R.id.m_PM_DRAKULA									: return MementoFactory.PM_DRAKULA;
+		case R.id.m_PM_SQUID									: return MementoFactory.PM_SQUID;
+		case R.id.m_PM_GROTESQUE								: return MementoFactory.PM_GROTESQUE;
+		case R.id.m_PM_RANDOM_SHAPE								: return MementoFactory.PM_RANDOM_SHAPE;
+		case R.id.m_PM_SKULL_VALLEY								: return MementoFactory.PM_SKULL_VALLEY;
 		
-		case R.id.m_PM_BLOB										: return MandelbrotMementoFactory.PM_BLOB;
-		case R.id.m_PM_CHAINS									: return MandelbrotMementoFactory.PM_CHAINS;
-		case R.id.m_PM_VISAGE_OF_WAR							: return MandelbrotMementoFactory.PM_VISAGE_OF_WAR;
-		case R.id.m_PM_FIRE										: return MandelbrotMementoFactory.PM_FIRE;
-		case R.id.m_PM_CARDIOID									: return MandelbrotMementoFactory.PM_CARDIOID;
-		case R.id.m_PM_SWIRL									: return MandelbrotMementoFactory.PM_SWIRL;
+		case R.id.m_PM_BLOB										: return MementoFactory.PM_BLOB;
+		case R.id.m_PM_CHAINS									: return MementoFactory.PM_CHAINS;
+		case R.id.m_PM_VISAGE_OF_WAR							: return MementoFactory.PM_VISAGE_OF_WAR;
+		case R.id.m_PM_FIRE										: return MementoFactory.PM_FIRE;
+		case R.id.m_PM_CARDIOID									: return MementoFactory.PM_CARDIOID;
+		case R.id.m_PM_SWIRL									: return MementoFactory.PM_SWIRL;
 
 		}
 		

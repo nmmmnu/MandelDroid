@@ -1,4 +1,4 @@
-package nu.nmmm.android.mandelbrot.color;
+package nu.nmmm.android.fractal.color;
 
 
 public class FColorFactory {
